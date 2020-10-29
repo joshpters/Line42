@@ -1,6 +1,111 @@
 ﻿@{
     ViewData["Title"] = "Privacy Policy";
+    Layout = "_HomeLayout";
 }
-<h1>@ViewData["Title"]</h1>
 
-<p>Use this page to detail your site's privacy policy.</p>
+<div id="blogs-container">
+    <a href="" class="blog-category active">All</a>
+    <a href="" class="blog-category">New in .NET Core 5</a>
+    <a href="" class="blog-category">Reactions to React</a>
+    <a href="" class="blog-category">Vue for You</a>
+</div>
+
+<div class="page">
+    <div class="page-wrapper">
+        <div class="left-wrapper">
+            @for (int i = 0; i < 5; i++)
+            {
+            <div class="post-card">
+                <a href="">
+                    <div class="post-thumbnail">
+                        <img src="https://picsum.photos/seed/picsum/500/500" alt="" />
+                    </div>
+                    <div class="post-card-content-container">
+                        <div class="meta-author">By Joshua Peters, November 23, 2016</div>
+                        <div class="meta-title"><h4>This is a post</h4></div>
+                        <p class="meta-abstract">This the abstract. An abstract is a small piece of text that is not an exact copy from the post but gives you a peak into what it's about</p>
+                        <div class="post-tag-list">
+                            JavaScript, HTML5
+                        </div>
+                    </div>
+                </a>
+            </div>
+            }
+        </div>
+        <div class="right-wrapper">
+            <div class="sticky">
+                <div class="sidebar-box">
+                    <form class="search-form">
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" placeholder="Search...">
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" id="search-button" type="submit">
+                                    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-search" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" d="M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z" />
+                                        <path fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z" />
+                                    </svg> 
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="sidebar-box">
+                    <div class="sidebar-box-header">
+                        <h4>Popular Tags</h4>
+                    </div>
+                    <div class="sidebar-box-content">
+                        <div class="tag-container">
+                            <a href="" class="tag">JavaScipt</a>
+                            <a href="" class="tag">.NET Core</a>
+                            <a href="" class="tag">CSS</a>
+                            <a href="" class="tagy">HTML</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="sidebar-box popular-posts">
+                    <div class="sidebar-box-header">
+                        <h4>Popular Posts</h4>
+                    </div>
+                    <div class="sidebar-box-content">
+                        <div class="popular-post-wrapper">
+                            <a href="#" class="popular-post">
+                                <div class="left-div">
+                                    <img src="https://picsum.photos/seed/picsum/500/500" alt="" />
+                                </div>
+                                <div class="right-div">
+                                    <span>6 Things You Don't Know About JavaScript</span>
+                                </div>
+                            </a>
+                            <a href="#" class="popular-post">
+                                <div class="left-div">
+                                    <img src="https://picsum.photos/seed/picsum/500/500" alt="" />
+                                </div>
+                                <div class="right-div">
+                                    <span>6 Things You Don't Know About JavaScript</span>
+                                </div>
+                            </a>
+                            <a href="#" class="popular-post">
+                                <div class="left-div">
+                                    <img src="https://picsum.photos/seed/picsum/500/500" alt="" />
+                                </div>
+                                <div class="right-div">
+                                    <span>6 Things You Don't Know About JavaScript</span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="add-options-wrapper" class="animate__animated animate__bounceIn">
+        <div class="option"><h6>Blog</h6></div>
+        <div class="option"><h6>Post</h6></div>
+    </div>
+    <button onclick="toggleNew()" id="add-new">
+        <svg viewBox="0 0 16 16" class="bi bi-plus-circle-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z" />
+        </svg>
+    </button>
+</div>

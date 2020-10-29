@@ -2,9 +2,47 @@
 
 @{
     ViewData["Title"] = "Index";
+    Layout = "_AdminLayout";
 }
 
-<h1>Index</h1>
+@foreach (var item in Model)
+{
+    <div class="row">
+        <div class="col">
+            @{
+                var Id = item.Id;
+                var PostId = item.PostId;
+                var Content = item.Content;
+                var BlogUserId = item.BlogUserId;
+            }
+            @Html.DisplayFor(modelItem => item.Content)
+            <button onclick="EditComment(@Id)">Edit</button>
+
+            <form asp-action="Delete">
+                <input type="hidden" asp-for="@Id" />
+                <input type="submit" value="Delete" class="btn btn-danger" />
+            </form>
+
+            <form style="display:none;" id="comment-form-id-@item.Id" asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="@Id" />
+                <input type="hidden" asp-for="@BlogUserId" />
+                <input type="hidden" asp-for="@PostId" />
+                <div class="form-group">
+                    <input asp-for="@Content" class="form-control" />
+                    <span asp-validation-for="@Content" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                    <button type="button" onclick="CancelEditComment(@Id)">Cancel</button>
+                </div>
+            </form>
+            <hr style="border-color:white" />
+        </div>
+    </div>
+}
+
+@*<h1>Index</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -56,4 +94,4 @@
         </tr>
 }
     </tbody>
-</table>
+</table>*@

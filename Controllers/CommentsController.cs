@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CodingBlog.Data;
 using CodingBlog.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CodingBlog.Controllers
 {
@@ -20,6 +21,7 @@ namespace CodingBlog.Controllers
         }
 
         // GET: Comments
+        [Authorize(Roles = "Admin,Moderator")]
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Comment.Include(c => c.BlogUser).Include(c => c.Post);
@@ -46,31 +48,26 @@ namespace CodingBlog.Controllers
             return View(comment);
         }
 
-        // GET: Comments/Create
-        public IActionResult Create()
-        {
-            ViewData["BlogUserId"] = new SelectList(_context.Set<BlogUser>(), "Id", "Id");
-            ViewData["PostId"] = new SelectList(_context.Post, "Id", "Title");
-            return View();
-        }
-
         // POST: Comments/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,PostId,Content")] Comment comment)
+        public async Task<IActionResult> Create([Bind("PostId,Content")] Comment comment)
         {
             if (ModelState.IsValid)
             {
                 comment.Created = DateTime.Now;
+                var blogUser = await _context.Users.FirstOrDefaultAsync(u => u.UserName == User.Identity.Name);
+                comment.BlogUserId = blogUser.Id;
+
                 _context.Add(comment);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Details", "Posts", new { id = comment.PostId });
             }
-            ViewData["BlogUserId"] = new SelectList(_context.Set<BlogUser>(), "Id", "Id", comment.BlogUserId);
-            ViewData["PostId"] = new SelectList(_context.Post, "Id", "Id", comment.PostId);
-            return View(comment);
+            //ViewData["BlogUserId"] = new SelectList(_context.Set<BlogUser>(), "Id", "Id", comment.BlogUserId);
+            //ViewData["PostId"] = new SelectList(_context.Post, "Id", "Id", comment.PostId);
+            return RedirectToAction("Index", "Post");
         }
 
         // GET: Comments/Edit/5
@@ -96,7 +93,7 @@ namespace CodingBlog.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,PostId,Content")] Comment comment)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,BlogUserId,PostId,Content")] Comment comment)
         {
             if (id != comment.Id)
             {

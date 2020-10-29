@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CodingBlog.Data;
 using CodingBlog.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CodingBlog.Controllers
 {
@@ -46,6 +47,7 @@ namespace CodingBlog.Controllers
         }
 
         // GET: Tags/Create
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             ViewData["PostId"] = new SelectList(_context.Post, "Id", "Id");
@@ -70,6 +72,7 @@ namespace CodingBlog.Controllers
         }
 
         // GET: Tags/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -123,6 +126,7 @@ namespace CodingBlog.Controllers
         }
 
         // GET: Tags/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)

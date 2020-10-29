@@ -21,6 +21,8 @@ namespace CodingBlog.Models
         public DateTime Created { get; set; }
 
         public DateTime? Updated { get; set; }
+
+        public bool Approved { get; set; }
         #endregion
 
         #region Navigation
@@ -28,5 +30,11 @@ namespace CodingBlog.Models
 
         public BlogUser BlogUser { get; set; }
         #endregion
+
+        public Comment()
+        {
+
+        }
+
     }
 }

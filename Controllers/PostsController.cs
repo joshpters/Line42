@@ -10,6 +10,8 @@ using CodingBlog.Models;
 using Microsoft.AspNetCore.Http;
 using System.IO;
 using CodingBlog.Helpers;
+using CodingBlog.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CodingBlog.Controllers
 {
@@ -25,10 +27,13 @@ namespace CodingBlog.Controllers
         }
 
         // GET: Posts
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Post.Include(p => p.Blog);
-            return View(await applicationDbContext.ToListAsync());
+            var posts = await _context.Post.ToListAsync();
+            var blogs = await _context.Blog.ToListAsync();
+            var viewModel = new PostBlogVM(posts, blogs);
+            return View(viewModel);
         }
 
         // GET: Posts/Details/5
@@ -42,12 +47,17 @@ namespace CodingBlog.Controllers
 
             var post = await _context.Post
                 .Include(p => p.Blog)
+                .Include(p => p.Comments)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (post == null)
             {
                 return NotFound();
             }
-
+            foreach (var comment in post.Comments.ToList())
+            {
+                comment.BlogUser = await _context.Users.FindAsync(comment.BlogUserId);
+            }
             //ViewData["Image"] = ImageHelper.DecodeImage(post.Image, post.FileName);
 
             return View(post);
@@ -75,14 +85,27 @@ namespace CodingBlog.Controllers
 
 
         // GET: Posts/Create
-        public IActionResult Create(int? id)
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Create(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
             var post = new Post();
-            post.BlogId = (int)id;
+            if (id != null)
+            {
+                var blog = await _context.Blog.FindAsync(id);
+                if (blog != null)
+                {
+                    post.BlogId = (int)id;
+                }
+            }
+
+            if (post.BlogId == 0)
+            {
+                ViewData["BlogId"] = new SelectList(_context.Blog, "Id", "Name");
+            } else
+            {
+                ViewData["BlogId"] = new SelectList(_context.Blog, "Id", "Name", post.BlogId);
+            }
+
             return View(post);
         }
 
@@ -111,6 +134,7 @@ namespace CodingBlog.Controllers
         }
 
         // GET: Posts/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -132,7 +156,7 @@ namespace CodingBlog.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,BlogId,Title,Content,Abstract,Created,IsPublished")] Post post)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,BlogId,Title,Content,Abstract,Created,IsPublished")] Post post, IFormFile image)
         {
             if (id != post.Id)
             {
@@ -143,6 +167,16 @@ namespace CodingBlog.Controllers
             {
                 try
                 {
+                    if (image != null)
+                    {
+                        post.FileName = image.FileName;
+                        post.Image = ImageHelper.EncodeImage(image);
+                    }
+                    else
+                    {
+                        //var existingPost = _context.Post.Find(id);
+                        //post.Image = existingPost.Image;
+                    }
                     post.Updated = DateTime.Now;
                     _context.Update(post);
                     await _context.SaveChangesAsync();
@@ -165,6 +199,7 @@ namespace CodingBlog.Controllers
         }
 
         // GET: Posts/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)

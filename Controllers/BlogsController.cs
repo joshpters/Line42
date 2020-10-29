@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CodingBlog.Data;
 using CodingBlog.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CodingBlog.Controllers
 {
@@ -20,9 +21,10 @@ namespace CodingBlog.Controllers
         }
 
         // GET: Blogs
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Blog.ToListAsync());
+            return View(await _context.Blog.Include(p => p.Posts).ToListAsync());
         }
 
         // GET: Blogs/Details/5
@@ -44,6 +46,7 @@ namespace CodingBlog.Controllers
         }
 
         // GET: Blogs/Create
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             return View();
@@ -66,6 +69,7 @@ namespace CodingBlog.Controllers
         }
 
         // GET: Blogs/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -117,6 +121,7 @@ namespace CodingBlog.Controllers
         }
 
         // GET: Blogs/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)

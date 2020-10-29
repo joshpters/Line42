@@ -1,0 +1,347 @@
+﻿/*About Page*/
+/*img {
+    border-radius: 50%;
+    width: 100%;
+    height: 100%;
+    transition: all 0.2s;
+}
+
+a:hover img {
+    transform: scale(1.05);
+    transition: all 0.2s;
+}*/
+
+body {
+    background-color: #1d1e2e;
+    color: white;
+    font-family: 'Poppins', sans-serif;
+}
+
+a {
+    color: white;
+}
+
+.bold {
+    font-weight: 700;
+}
+
+a:hover {
+    text-decoration: none;
+    color: white;
+    font-weight: 700;
+}
+
+.navbar.bg-dark {
+    background-color: #1d1e2e !important;
+}
+
+h1 {
+    color: white;
+}
+
+.top{
+    min-height: 50%;
+}
+
+.area {
+    background-color: #27293d;
+    border-radius: 10px;
+}
+
+.form-control, input, .form-control:disabled {
+    background-color: #27293d;
+    color: white;
+    border-color: #e14eca;
+}
+
+.form-control:focus {
+    background-color: #27293d;
+    border-color: #e14eca;
+    color:white;
+    box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.0);
+}
+
+input:focus, textarea:focus, select:focus {
+    outline: none;
+}
+
+.input-group-text {
+    background-color: #e14eca;
+    border-color: #e14eca;
+    color: white;
+}
+
+
+input[type="button"], .btn-dark {
+/*    background-image: linear-gradient(to bottom left,#e14eca,#ba54f5,#e14eca);*/
+    background-color: #e14eca;
+}
+
+input[type="button"]:hover, .btn-dark:hover {
+    background-image: linear-gradient(to bottom left,#e14eca,#ba54f5,#e14eca);
+    background-color: #e14eca;
+}
+
+input[type="button"]:focus, .btn-dark:focus, .dropdown-menu {
+    background-image: linear-gradient(to bottom left,#e14eca,#ba54f5,#e14eca);
+    background-color: #e14eca;
+}
+
+.dropdown-item {
+    color: white;
+    background-color: transparent;
+}
+
+.dropdown-item {
+    --animate-delay: 0.1s;
+}
+
+.dropdown-item:hover, .dropdown-item:focus {
+    text-shadow: 1px 1px 10px white;
+    color:white;
+    background-color: transparent; 
+}
+
+.custom-button {
+    border-radius: 20%;
+    background-color: #e14eca;
+    color:white;
+}
+
+/*speed up the animation delay for these elements*/
+.result {
+    --animate-delay: 0.1s;
+}
+
+.tag {
+    background: #e14eca;
+    color: white;
+    padding: 1% 10% 1% 2%;
+    clip-path: polygon(0% 0%, 75% 0%, 100% 50%, 75% 100%, 0% 100%);
+}
+
+.result-num {
+    margin-left: 3%;
+}
+
+.table {
+    background-color: #27293d;
+}
+
+.table-container {
+    border: 2px solid #e14eca;
+}
+
+.custom-border {
+    border: 2px solid #e14eca;
+}
+
+.footer-margin {
+    margin-bottom: 5rem !important;
+}
+
+.left {
+    height: 100vh;
+    width: 250px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.sidebar {
+    background: linear-gradient(0deg,#ba54f5,#e14eca);
+    background-color: #e14eca;
+    height: calc(100vh - 10rem);
+    width: calc(100% - 3rem);
+    margin: 5rem auto;
+    border-radius: 10px;
+    overflow-x: hidden;
+}
+
+.hamburgerHelper {
+    cursor: pointer;
+    z-index: 2;
+}
+
+.hamburger-inner, .hamburger-inner::after, .hamburger-inner::before {
+    background-color: white !important;
+}
+
+.hamburger:focus{
+    outline: none;
+    border: none;
+}
+
+.navbar {
+    height: 5rem;
+}
+
+.navItems {
+    list-style-type: none;
+    padding-left: 1em;
+    width: 90%;
+    margin-bottom: 0;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.navItems li {
+    padding-top: 1em;
+    padding-bottom: 1em;
+    z-index: 5;
+    pointer-events: all;
+    font-weight: 100;
+}
+
+.navItems li a {
+    display: block;
+    margin-top: 0.5em;
+    margin-left: 1em;
+}
+
+.navItems li:hover {
+    cursor: pointer;
+}
+
+.navItems li.active {
+    font-weight: 700;
+}
+
+.sidebarHead{
+    border-bottom: 1px solid white;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 1em 0em;
+    font-weight: 700;
+    font-size: 20px;
+}
+
+.navbar-wrapper {
+    display: flex;
+    align-items: center;
+    position: fixed;
+}
+
+@media (max-width: 768px){
+    .hidden-on-mobile {
+        display: none;
+    }
+}
+
+@media (max-width: 992px) {
+    .navbar-wrapper {
+        position: relative;
+    }
+
+    .main.closed {
+        transition: .5s cubic-bezier(.685,.0473,.346,1);
+        transform: translateZ(0)
+    }
+
+    .main.open {
+        transition: .5s cubic-bezier(.685,.0473,.346,1);
+        transform: translate3d(260px,0,0)
+    }
+
+    .sidebar.open {
+        transition: .5s cubic-bezier(.685,.0473,.346,1);
+        transform: translateZ(0)
+    }
+
+    .sidebar.closed {
+        transform: translate3d(-260px,0,0);
+        transition: .5s cubic-bezier(.685,.0473,.346,1);
+    }
+
+    .sidebar {
+        background: linear-gradient(0deg,#ba54f5,#e14eca);
+        background-color: #e14eca;
+        height: 100%;
+        width: 100%;
+        margin: 0 0;
+        border-radius: 0px;
+    }
+}
+
+@media (min-width: 992px) {
+    .container {
+        margin-left: 0;
+    }
+
+    .hamburger-inner, .hamburger-inner::after, .hamburger-inner::before {
+        background-color: transparent;
+        
+    }
+
+    #toggle {
+        display: none;
+    }
+    .right {
+        margin-left: 250px;
+        padding-right: 1.5rem;
+    }
+}
+
+.amort-scroll{
+    width: auto;
+    height: 500px;
+    overflow-y: scroll;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.amort-scroll::-webkit-scrollbar {
+    display: none;
+}
+
+
+#hidden-on-page-load {
+    display: none;
+}
+
+#errorZone {
+    display: none;
+    color: red;
+}
+
+.radio-buttons input {
+    list-style-type: none;
+    display: none;
+}
+
+.btn-primary {
+    /*    background-color: #9d368d;*/
+    background-color: #1e1e2f;
+    border: 1px solid #e14eca;
+    margin: 0;
+}
+
+.btn-primary.active {
+    background-color: #e14eca !important;
+    border: 1px solid #e14eca !important;
+}
+
+.btn-primary:hover {
+    background-color: #e14eca !important;
+    border: 1px solid #e14eca !important;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+.custom-file-upload {
+    background-color: #1e1e2f;
+    border: 1px solid #e14eca;
+    border-radius: 4px;
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+}
+
+.custom-file-upload:hover {
+    background-color: #e14eca;
+    cursor: pointer;
+}

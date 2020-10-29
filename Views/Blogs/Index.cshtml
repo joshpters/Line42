@@ -2,36 +2,57 @@
 
 @{
     ViewData["Title"] = "Index";
-    Layout = "_HomeLayout";
+    Layout = "_AdminLayout";
 }
 
-<h1>Index</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                <a asp-controller="Posts" asp-action="BlogPosts" asp-route-id="@item.Id">Blog Posts</a> |
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> |
-                <a asp-controller="Posts" asp-action="Create" asp-route-id="@item.Id">New Post</a>
-            </td>
-        </tr>
+<div class="row">
+    <div class="col">
+        <h1>Blogs (@Model.Count())</h1>
+    </div>
+</div>
+<hr style="border-color: white" />
+@foreach (var item in Model)
+{
+    <div class="row">
+        <div class="col">
+            <a asp-controller="Blogs" asp-action="Edit" asp-route-id="@item.Id">
+                <div class="post-card-content-container">
+                    <div class="meta-title"><h4>@Html.DisplayFor(modelItem => item.Name)</h4></div>
+                    <p class="meta-abstract">Posts: @item.Posts.Count()</p>
+                </div>
+            </a>
+        </div>
+    </div>
 }
-    </tbody>
-</table>
+
+
+@*<h1>Index</h1>
+
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+    @foreach (var item in Model) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    <a asp-controller="Posts" asp-action="BlogPosts" asp-route-id="@item.Id">Blog Posts</a> |
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> |
+                    <a asp-controller="Posts" asp-action="Create" asp-route-id="@item.Id">New Post</a>
+                </td>
+            </tr>
+    }
+        </tbody>
+    </table>*@

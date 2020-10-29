@@ -6,105 +6,57 @@
     <title>@ViewData["Title"] - CodingBlog</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Rock+Salt&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 </head>
+    
 <body>
     <header>
-        <nav class="navbar navbar-dark navbar-expand-sm navbar-toggleable-sm box-shadow">
+        @{
+            string AdditionalClass = "";
+            if (ViewData["IncludeHeader"] == "false")
+            {
+                AdditionalClass = "bg-dark";
+            }
+        }
+        <nav class="navbar navbar-dark @AdditionalClass navbar-expand-sm navbar-toggleable-sm box-shadow">
             <div class="container">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">CodingBlog</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
+                @if (User.IsInRole("Admin"))
+                {
+                    <a asp-controller="Blogs" asp-action="Index" class="btn btn-primary">Admin</a>
+                }
+                else if (User.IsInRole("Moderator"))
+                {
+                    <a asp-controller="Comments" asp-action="Index" class="btn btn-primary">Comment Stream</a>
+                }
+
                 <div class="navbar-collapse  collapse d-sm-inline-flex flex-sm-row-reverse">
                     <partial name="_LoginPartial" />
                 </div>
             </div>
         </nav>
-        <section id="hero" class="d-flex flex-column justify-content-center">
-            <div class="container">
-                <div class="row text-center">
-                    <div class="col">
-                        <h1>BLOG NAME</h1>
+        @if (ViewData["IncludeHeader"] == "true")
+        {
+            <section id="hero" class="d-flex flex-column justify-content-center">
+                <div class="container">
+                    <div class="row text-center">
+                        <div class="col">
+                            <h1>@ViewData["Title"]</h1>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
+        }
     </header>
-    <div id="mobile-sidebar-container" class="text-center">
-        <div id="mobile-sidebar">
-            <div id="toggle">
-                Categories
-            </div>
-            <div class="items-container disabled">
-                <div class="mobile-sidebar-item">
-                    ITEM TEXT >
-                </div>
-                <div class="mobile-sidebar-item">
-                    ITEM TEXT >
-                </div>
-                <div class="mobile-sidebar-item">
-                    ITEM TEXT >
-                </div>
-                <div class="mobile-sidebar-item">
-                    ITEM TEXT >
-                </div>
-                <div class="mobile-sidebar-item">
-                    ITEM TEXT >
-                </div>
-            </div>
-        </div>
-    </div>
-    <div id="page">
-        <div id="post-container">
-            <div class="post top">
-
-            </div>
-            <div class="post">
-
-            </div>
-            <div class="post">
-
-            </div>
-            <div class="post">
-
-            </div>
-            <div class="post bottom">
-
-            </div>
-        </div>
-        <div id="sidebar-container">
-            <div id="sidebar">
-                <div class="sidebar-item">
-                    ITEM TEXT >
-                </div>
-                <div class="sidebar-item">
-                    ITEM TEXT >
-                </div>
-                <div class="sidebar-item">
-                    ITEM TEXT >
-                </div>
-                <div class="sidebar-item">
-                    ITEM TEXT >
-                </div>
-                <div class="sidebar-item">
-                    ITEM TEXT >
-                </div>
-            </div>
-        </div>
-    </div>
     
-    
-    <main role="main" style="display:none;">
-        <div class="container">
-            <div class="row">
-                <div class="col">
-                    @RenderBody()
-                </div>
-            </div>
-        </div>
+    <main role="main">
+        @RenderBody()
     </main>
 
     <footer class="border-top footer text-muted">
@@ -112,9 +64,30 @@
             &copy; 2020 - CodingBlog - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/list.js/1.5.0/list.min.js"></script>
+    <script src="https://use.fontawesome.com/3312a5a81e.js"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+        let toggle = false;
+        function toggleNew() {
+            addNewOptionsPopUp = document.getElementById('add-options-wrapper');
+            if (toggle) {
+                addNewOptionsPopUp.style.display = "none";
+                toggle = false;
+            } else {
+                addNewOptionsPopUp.style.display = "block";
+                toggle = true;
+            }
+        }
+
+
+        var postList = new List('post-container', {
+            page: 10,
+            pagination: true
+        });
+    </script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>

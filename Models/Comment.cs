@@ -22,7 +22,9 @@ namespace CodingBlog.Models
 
         public DateTime? Updated { get; set; }
 
-        public bool Approved { get; set; }
+        //public bool Approved { get; set; }
+
+        //public string ModEditReason { get; set; }
         #endregion
 
         #region Navigation
@@ -30,11 +32,6 @@ namespace CodingBlog.Models
 
         public BlogUser BlogUser { get; set; }
         #endregion
-
-        public Comment()
-        {
-
-        }
 
     }
 }

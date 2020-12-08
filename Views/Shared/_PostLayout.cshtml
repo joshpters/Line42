@@ -9,46 +9,34 @@
     @*<link href="https://fonts.googleapis.com/css2?family=Rock+Salt&display=swap" rel="stylesheet">*@
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 </head>
-<body>
-    <header style="background-image: url(@ViewData["HeaderImage"]);">
-        <nav class="navbar navbar-dark navbar-expand-sm navbar-toggleable-sm box-shadow">
+@* background-image: url(@ViewData["HeaderImage"]); *@
+<body class="fixed-nav-margin">
+    <header class="fixed-top">
+        <nav class="navbar navbar-light bg-highlight navbar-expand-sm navbar-toggleable-sm box-shadow">
             <div class="container">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">CodingBlog</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                @*<form class="d-inline">
-                    <div class="input-group">
-                        <input type="text" class="form-control border border-right-0 font-size-small" placeholder="Search...">
-                        <span class="input-group-append">
-                            <button class="btn btn-outline-secondary border border-left-0 font-size-small" type="button">
-                                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-search" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                    <path fill-rule="evenodd" d="M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z" />
-                                    <path fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z" />
-                                </svg>
-                            </button>
-                        </span>
-                    </div>
-                </form>*@
+                @if (User.IsInRole("Admin"))
+                {
+                    <a asp-controller="Blogs" asp-action="Index" class="btn btn-primary">Admin</a>
+                }
+                else if (User.IsInRole("Moderator"))
+                {
+                    <a asp-controller="Comments" asp-action="Index" class="btn btn-primary">Comment Stream</a>
+                }
                 <div class="navbar-collapse  collapse d-sm-inline-flex flex-sm-row-reverse">
                     <partial name="_LoginPartial" />
                 </div>
             </div>
         </nav>
-
-        <section id="hero" class="d-flex flex-column justify-content-center">
-            <div class="container">
-                <div class="row text-center">
-                    <div class="col">
-                        <h1>// @ViewData["Title"]</h1>
-                    </div>
-                </div>
-            </div>
-        </section>
-
+        <progress id="top-progress-bar" value="0" max="100"></progress>
     </header>
+    
 
     <main role="main">
         @RenderBody()
@@ -62,6 +50,17 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+        // When the user scrolls the page, execute myFunction
+        window.onscroll = function () { myFunction() };
+
+        function myFunction() {
+            var winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            var scrolled = (winScroll / height) * 100;
+            document.getElementById("top-progress-bar").value = scrolled;
+        }
+    </script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>

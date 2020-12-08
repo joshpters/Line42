@@ -8,21 +8,15 @@
     <link rel="stylesheet" href="~/css/site.css" />
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 </head>
     
 <body>
     <header>
-        @{
-            string AdditionalClass = "";
-            if (ViewData["IncludeHeader"] == "false")
-            {
-                AdditionalClass = "bg-dark";
-            }
-        }
-        <nav class="navbar navbar-dark @AdditionalClass navbar-expand-sm navbar-toggleable-sm box-shadow">
+        <nav class="navbar  navbar-light bg-highlight  navbar-expand-sm navbar-toggleable-sm box-shadow">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">CodingBlog</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index" asp-route-id="">CodingBlog</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -41,7 +35,7 @@
                 </div>
             </div>
         </nav>
-        @if (ViewData["IncludeHeader"] == "true")
+        @if ((string)ViewData["IncludeHeader"] == "true")
         {
             <section id="hero" class="d-flex flex-column justify-content-center">
                 <div class="container">
@@ -54,7 +48,7 @@
             </section>
         }
     </header>
-    
+
     <main role="main">
         @RenderBody()
     </main>
@@ -64,12 +58,21 @@
             &copy; 2020 - CodingBlog - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/list.js/1.5.0/list.min.js"></script>
     <script src="https://use.fontawesome.com/3312a5a81e.js"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script>
+
+        function EditComment(id) {
+            document.getElementById(`comment-form-id-${id}`).style.display = "block";
+        }
+        function CancelEditComment(id) {
+            document.getElementById(`comment-form-id-${id}`).style.display = "none";
+        }
+
         let toggle = false;
         function toggleNew() {
             addNewOptionsPopUp = document.getElementById('add-options-wrapper');

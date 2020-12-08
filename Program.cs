@@ -10,6 +10,7 @@ using CodingBlog.Models;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Identity;
 using CodingBlog.Utilities;
+using CodingBlog.Data;
 
 namespace CodingBlog
 {
@@ -18,6 +19,7 @@ namespace CodingBlog
         public async static Task Main(string[] args)
         {
             var host = CreateHostBuilder(args).Build();
+            await DataHelper.ManageData(host);
             await SeedDataAsync(host);
             host.Run();
         }
@@ -26,6 +28,8 @@ namespace CodingBlog
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
+                    webBuilder.CaptureStartupErrors(true);
+                    webBuilder.UseSetting(WebHostDefaults.DetailedErrorsKey, "true");
                     webBuilder.UseStartup<Startup>();
                 });
 

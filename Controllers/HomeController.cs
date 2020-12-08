@@ -24,24 +24,30 @@ namespace CodingBlog.Controllers
             _logger = logger;
         }
 
-        public async Task<IActionResult> Index(int? id)
+        public async Task<IActionResult> Index(int? id, string? query)
         {
+            var blogs = await _context.Blog.Where(p => p.Posts.Count() > 0).ToListAsync();
             if (id != null)
             {
                 var blog = await _context.Blog.FindAsync(id);
                 if (blog != null)
                 {
                     var postsFiltered = await _context.Post.Where(p => p.BlogId == id && p.IsPublished).OrderByDescending(p => p.Created).ToListAsync();
-                    var blogsFiltered = await _context.Blog.Where(p => p.Posts.Count() > 0).ToListAsync();
-                    var viewModelFiltered = new PostBlogVM(postsFiltered, blogsFiltered);
+                    var viewModelFiltered = new PostBlogVM(postsFiltered, blogs);
                     ViewData["BlogId"] = id;
                     return View(viewModelFiltered);
                 }
             }
 
-            ViewData["BlogId"] = null;
+            if (query != null)
+            {
+                var postsSearchFiltered = await _context.Post.Where(p => p.Content.Contains(query) && p.IsPublished).OrderByDescending(p => p.Created).ToListAsync();
+                var viewModelSearchFiltered = new PostBlogVM(postsSearchFiltered, blogs);
+                ViewData["Query"] = query;
+                return View(viewModelSearchFiltered);
+            }
+
             var posts = await _context.Post.Where(p => p.IsPublished).OrderByDescending(p => p.Created).ToListAsync();
-            var blogs = await _context.Blog.Where(p => p.Posts.Count() > 0).ToListAsync();
             var viewModel = new PostBlogVM(posts, blogs);
 
             return View(viewModel);

@@ -12,31 +12,32 @@ a:hover img {
 }*/
 
 body {
-    background-color: #1d1e2e;
-    color: white;
+    background-color: #fff;
+    color: #33475b;
     font-family: 'Poppins', sans-serif;
 }
 
 a {
-    color: white;
+    color: #33475b;
+}
+
+a:hover {
+    text-decoration: none;
+    color: #33475b;
 }
 
 .bold {
     font-weight: 700;
 }
 
-a:hover {
-    text-decoration: none;
-    color: white;
-    font-weight: 700;
-}
+
 
 .navbar.bg-dark {
-    background-color: #1d1e2e !important;
+    background-color: #fff !important;
 }
 
 h1 {
-    color: white;
+    color: #33475b;
 }
 
 .top{
@@ -44,20 +45,17 @@ h1 {
 }
 
 .area {
-    background-color: #27293d;
+    background-color: #eaf0f6;
     border-radius: 10px;
 }
 
 .form-control, input, .form-control:disabled {
-    background-color: #27293d;
-    color: white;
-    border-color: #e14eca;
+    background-color: #eaf0f6;
+    color: #33475b;
 }
 
 .form-control:focus {
-    background-color: #27293d;
-    border-color: #e14eca;
-    color:white;
+    background-color: #eaf0f6;
     box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.0);
 }
 
@@ -66,29 +64,29 @@ input:focus, textarea:focus, select:focus {
 }
 
 .input-group-text {
-    background-color: #e14eca;
-    border-color: #e14eca;
-    color: white;
+    background-color: #fcd088;
+    border-color: #fcd088;
+    color: #33475b;
 }
 
 
 input[type="button"], .btn-dark {
-/*    background-image: linear-gradient(to bottom left,#e14eca,#ba54f5,#e14eca);*/
-    background-color: #e14eca;
+/*    background-image: linear-gradient(to bottom left,#fcd088,#f4c48d,#fcd088);*/
+    background-color: #fcd088;
 }
 
 input[type="button"]:hover, .btn-dark:hover {
-    background-image: linear-gradient(to bottom left,#e14eca,#ba54f5,#e14eca);
-    background-color: #e14eca;
+    /*background-image: linear-gradient(to bottom left,#fcd088,#f4c48d,#fcd088);*/
+    background-color: #fcd088;
 }
 
 input[type="button"]:focus, .btn-dark:focus, .dropdown-menu {
-    background-image: linear-gradient(to bottom left,#e14eca,#ba54f5,#e14eca);
-    background-color: #e14eca;
+    /*background-image: linear-gradient(to bottom left,#fcd088,#f4c48d,#fcd088);*/
+    background-color: #fcd088;
 }
 
 .dropdown-item {
-    color: white;
+    color: #33475b;
     background-color: transparent;
 }
 
@@ -104,7 +102,7 @@ input[type="button"]:focus, .btn-dark:focus, .dropdown-menu {
 
 .custom-button {
     border-radius: 20%;
-    background-color: #e14eca;
+    background-color: #fcd088;
     color:white;
 }
 
@@ -114,8 +112,8 @@ input[type="button"]:focus, .btn-dark:focus, .dropdown-menu {
 }
 
 .tag {
-    background: #e14eca;
-    color: white;
+    background: #fcd088;
+    color: #33475b;
     padding: 1% 10% 1% 2%;
     clip-path: polygon(0% 0%, 75% 0%, 100% 50%, 75% 100%, 0% 100%);
 }
@@ -125,15 +123,15 @@ input[type="button"]:focus, .btn-dark:focus, .dropdown-menu {
 }
 
 .table {
-    background-color: #27293d;
+    background-color: #eaf0f6;
 }
 
 .table-container {
-    border: 2px solid #e14eca;
+    border: 2px solid #fcd088;
 }
 
 .custom-border {
-    border: 2px solid #e14eca;
+    border: 2px solid #fcd088;
 }
 
 .footer-margin {
@@ -151,13 +149,15 @@ input[type="button"]:focus, .btn-dark:focus, .dropdown-menu {
 }
 
 .sidebar {
-    background: linear-gradient(0deg,#ba54f5,#e14eca);
-    background-color: #e14eca;
+    /*background: linear-gradient(0deg,#0055A1,#0E84ED);*/
+    background-color: #FCD088;
     height: calc(100vh - 10rem);
     width: calc(100% - 3rem);
     margin: 5rem auto;
     border-radius: 10px;
     overflow-x: hidden;
+    color: white;
+    text-shadow: 0px 0px 8px darkgrey;
 }
 
 .hamburgerHelper {
@@ -166,7 +166,7 @@ input[type="button"]:focus, .btn-dark:focus, .dropdown-menu {
 }
 
 .hamburger-inner, .hamburger-inner::after, .hamburger-inner::before {
-    background-color: white !important;
+    background-color: #33475b !important;
 }
 
 .hamburger:focus{
@@ -176,6 +176,14 @@ input[type="button"]:focus, .btn-dark:focus, .dropdown-menu {
 
 .navbar {
     height: 5rem;
+}
+
+.navbar-dark .navbar-brand {
+    color: #33475b;
+}
+
+.navbar-dark:hover .navbar-brand {
+    color: #33475b;
 }
 
 .navItems {
@@ -193,12 +201,14 @@ input[type="button"]:focus, .btn-dark:focus, .dropdown-menu {
     z-index: 5;
     pointer-events: all;
     font-weight: 100;
+    color: white;
 }
 
 .navItems li a {
     display: block;
     margin-top: 0.5em;
     margin-left: 1em;
+    color: white;
 }
 
 .navItems li:hover {
@@ -257,8 +267,8 @@ input[type="button"]:focus, .btn-dark:focus, .dropdown-menu {
     }
 
     .sidebar {
-        background: linear-gradient(0deg,#ba54f5,#e14eca);
-        background-color: #e14eca;
+        background: linear-gradient(0deg,#f4c48d,#fcd088);
+        background-color: #fcd088;
         height: 100%;
         width: 100%;
         margin: 0 0;
@@ -306,26 +316,20 @@ input[type="button"]:focus, .btn-dark:focus, .dropdown-menu {
     color: red;
 }
 
-.radio-buttons input {
-    list-style-type: none;
-    display: none;
-}
-
 .btn-primary {
-    /*    background-color: #9d368d;*/
-    background-color: #1e1e2f;
-    border: 1px solid #e14eca;
+    background-color: #fcd088;
+    border: 1px solid #fcd088;
     margin: 0;
 }
 
 .btn-primary.active {
-    background-color: #e14eca !important;
-    border: 1px solid #e14eca !important;
+    background-color: #e2bb7a !important;
+    border: 1px solid #e2bb7a !important;
 }
 
 .btn-primary:hover {
-    background-color: #e14eca !important;
-    border: 1px solid #e14eca !important;
+    background-color: #e2bb7a !important;
+    border: 1px solid #e2bb7a !important;
 }
 
 input[type="file"] {
@@ -333,15 +337,33 @@ input[type="file"] {
 }
 
 .custom-file-upload {
-    background-color: #1e1e2f;
-    border: 1px solid #e14eca;
+    background-color: #fcd088;
+    border: 1px solid #fcd088;
     border-radius: 4px;
     display: inline-block;
     padding: 6px 12px;
     cursor: pointer;
+    color:white;
 }
 
 .custom-file-upload:hover {
-    background-color: #e14eca;
+    background-color: #e2bb7a;
     cursor: pointer;
+}
+
+.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+    background-color: #fcd088;
+    border-color: #fcd088;
+    color:white;
+    text-shadow: 0 0 8px grey;
+}
+
+.nav-tabs .nav-link {
+    border: 1px solid #fcd088;
+    border-top-left-radius: .5rem;
+    border-top-right-radius: .5rem;
+}
+
+.nav-tabs .nav-link:hover {
+    border-color: #fcd088;
 }

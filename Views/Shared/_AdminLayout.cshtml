@@ -109,7 +109,7 @@
                         </button>
                     </div>
 
-                    <a class="navbar-brand" asp-controller="Home" asp-action="Index">< Back To Blog</a>
+                    <a class="navbar-brand" asp-controller="Home" asp-action="Index">Back To Blog</a>
                 </div>
             </div>
         </nav>
@@ -132,6 +132,32 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script type="text/javascript">
+         document.getElementById('IsPublished').onchange = function () {
+             let button = document.getElementById('save-or-publish-button')
+             if (this.checked) {
+                 button.value = "Publish"
+             } else {
+                 button.value = "Save"
+             }
+        };
+
+        function generateForm(commentId, commentContent, blogUserId, created) {
+            document.querySelector('#form-template input#id').value = commentId;
+            document.querySelector('#form-template input#BlogUserId').value = blogUserId;
+            document.querySelector('#form-template input#Content').value = commentContent;
+            document.querySelector('#form-template input#Created').value = created;
+        }
+
+        $('#exampleModal').on('show.bs.modal', function (event) {
+            let button = $(event.relatedTarget) // Button that triggered the modal
+            let commentId = button.data('id')
+            let blogUserId = button.data('bloguserid')
+            let commentContent = button.data('content')
+            let created = button.data('created')
+            generateForm(commentId, commentContent, blogUserId, created)
+
+        })
+
 
         function EditComment(id) {
             document.getElementById(`comment-form-id-${id}`).style.display = "block";
@@ -147,8 +173,8 @@
 
         tinymce.init({
             selector: '#content',
-            skin: "oxide-dark",
-            content_css: "dark",
+            //skin: "oxide-dark",
+            //content_css: "dark",
             height: "50vh"
         });
 

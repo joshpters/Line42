@@ -24,8 +24,12 @@ namespace CodingBlog.Controllers
         [Authorize(Roles = "Admin,Moderator")]
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Comment.Include(c => c.BlogUser).Include(c => c.Post);
-            return View(await applicationDbContext.ToListAsync());
+            var comments = _context.Comment.Include(c => c.BlogUser).Include(c => c.Post);
+            //foreach (var comment in comments.ToList())
+            //{
+            //    comment.BlogUser = await _context.Users.FindAsync(comment.BlogUserId);
+            //}
+            return View(await comments.ToListAsync());
         }
 
         // GET: Comments/Details/5
@@ -93,7 +97,7 @@ namespace CodingBlog.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,BlogUserId,PostId,Content")] Comment comment)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,BlogUserId,Created,PostId,Content")] Comment comment)
         {
             if (id != comment.Id)
             {

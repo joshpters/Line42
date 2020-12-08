@@ -10,7 +10,7 @@
         <h1>Create Post</h1>
     </div>
 </div>
-<hr style="border-color: white;" />
+<hr />
 <div class="row">
     <div class="col">
         <form asp-action="Create" enctype="multipart/form-data">
@@ -52,7 +52,8 @@
                 </label>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-secondary">Back</a>
+                <input type="submit" id="save-or-publish-button" value="Save" class="btn btn-primary" />
             </div>
         </form>
     </div>

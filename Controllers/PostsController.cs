@@ -43,7 +43,6 @@ namespace CodingBlog.Controllers
             {
                 return NotFound();
             }
-            
 
             var post = await _context.Post
                 .Include(p => p.Blog)

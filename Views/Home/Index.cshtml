@@ -20,10 +20,23 @@
     }
 </div>
 
-<div class="page">
+<div class="page" id="main-page">
     <div class="page-wrapper">
         <div class="left-wrapper">
-            <ul>
+            @if (ViewData["Query"] != null)
+            {
+                var count = Model.Posts.Count();
+                if (count == 1)
+                {
+                    <h2 class="text-center">1 result for "@ViewData["Query"]"</h2>
+                }
+                else
+                {
+                    <h2 class="text-center">@count results for "@ViewData["Query"]"</h2>
+                }
+
+            }
+            <ul class="ul-post-container">
                 @{
                     bool admin = false;
                 }
@@ -34,45 +47,45 @@
                 @foreach (var item in Model.Posts)
                 {
                     var Id = item.Id;
-                <li class="post-card">
-                    <a asp-controller="Posts" asp-action="Details" asp-route-id="@item.Id">
-                        @if (item.Image != null)
+                    <li class="post-card">
+                        <a asp-controller="Posts" asp-action="Details" asp-route-id="@item.Id">
+                            @if (item.Image != null)
+                            {
+                                <div class="post-thumbnail">
+                                    <img src="@ImageHelper.GetImage(item)" alt="" />
+                                </div>
+                            }
+                            <div class="post-card-content-container">
+                                <div class="meta-author">By Joshua Peters, November 23, 2016</div>
+                                <div class="meta-title"><h4>@Html.DisplayFor(modelItem => item.Title)</h4></div>
+                                <p class="meta-abstract">@Html.DisplayFor(modelItem => item.Abstract)</p>
+                                <div class="post-tag-list">
+                                    JavaScript, HTML5
+                                </div>
+                            </div>
+                        </a>
+                        @if (admin)
                         {
-                            <div class="post-thumbnail">
-                                <img src="@ImageHelper.GetImage(item)" alt="" />
+                            <div class="admin-edit">
+                                <a asp-controller="Posts" asp-action="Edit" asp-route-id="@Id" class="admin-edit-link">
+                                    <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-pencil-square" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456l-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
+                                        <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
+                                    </svg>
+                                </a>
                             </div>
                         }
-                        <div class="post-card-content-container">
-                            <div class="meta-author">By Joshua Peters, November 23, 2016</div>
-                            <div class="meta-title"><h4>@Html.DisplayFor(modelItem => item.Title)</h4></div>
-                            <p class="meta-abstract">@Html.DisplayFor(modelItem => item.Abstract)</p>
-                            <div class="post-tag-list">
-                                JavaScript, HTML5
-                            </div>
-                        </div>
-                    </a>
-                    @if (admin)
-                    {
-                        <div class="admin-edit">
-                            <a asp-controller="Posts" asp-action="Edit" asp-route-id="@Id" class="admin-edit-link">
-                                <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-pencil-square" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456l-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
-                                    <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
-                                </svg>
-                            </a>
-                        </div>
-                    }
-                </li>
+                    </li>
                 }
             </ul>
-            
+
         </div>
         <div class="right-wrapper">
             <div class="sticky">
                 <div class="sidebar-box">
-                    <form class="search-form">
+                    <form asp-action="Index" asp-route-id="" class="search-form" method="get">
                         <div class="input-group mb-3">
-                            <input type="text" class="form-control" placeholder="Search...">
+                            <input type="text" name="query" class="form-control" placeholder="Search...">
                             <div class="input-group-append">
                                 <button class="btn btn-primary" id="search-button" type="submit">
                                     <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-search" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -144,6 +157,49 @@
         </svg>
     </button>
 </div>
+
+@*<footer class="border-top">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4">
+                
+            </div>
+            <div class="col-4">
+                <div class="popular-post-wrapper">
+                    <div class="sidebar-box-header">
+                        <h4>Popular Posts</h4>
+                    </div>
+                    <a href="#" class="popular-post">
+                        <div class="left-div">
+                            <img src="https://picsum.photos/seed/picsum/500/500" alt="" />
+                        </div>
+                        <div class="right-div">
+                            <span>6 Things You Don't Know About JavaScript</span>
+                        </div>
+                    </a>
+                    <a href="#" class="popular-post">
+                        <div class="left-div">
+                            <img src="https://picsum.photos/seed/picsum/500/500" alt="" />
+                        </div>
+                        <div class="right-div">
+                            <span>6 Things You Don't Know About JavaScript</span>
+                        </div>
+                    </a>
+                    <a href="#" class="popular-post">
+                        <div class="left-div">
+                            <img src="https://picsum.photos/seed/picsum/500/500" alt="" />
+                        </div>
+                        <div class="right-div">
+                            <span>6 Things You Don't Know About JavaScript</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col"></div>
+        </div>
+    </div>
+    &copy; 2020 - CodingBlog - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+</footer>*@
 
 
 @*<div id="page">

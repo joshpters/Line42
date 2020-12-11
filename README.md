@@ -2,7 +2,7 @@
 
 A blog, not built with WordPress.
 
-![Screenshot](/screenshot.jpg)
+![Screenshot](screenshot.jpg)
 
 This project was created using .NET Core MVC, C#, Bootstrap, HTML5, CSS3, and JavaScript.
 

@@ -1,96 +1,636 @@
-﻿<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - CodingBlog</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
-</head>
-    
-<body>
-    <header>
-        <nav class="navbar  navbar-light bg-highlight  navbar-expand-sm navbar-toggleable-sm box-shadow">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index" asp-route-id="">CodingBlog</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                @if (User.IsInRole("Admin"))
-                {
-                    <a asp-controller="Blogs" asp-action="Index" class="btn btn-primary">Admin</a>
-                }
-                else if (User.IsInRole("Moderator"))
-                {
-                    <a asp-controller="Comments" asp-action="Index" class="btn btn-primary">Comment Stream</a>
-                }
+﻿@using CodingBlog.Services
+@using CodingBlog.Helpers
+@inject ISidebarService sidebarService 
 
-                <div class="navbar-collapse  collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <partial name="_LoginPartial" />
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required Meta Tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <title> Bulkit :: Blog</title>
+    <link rel="icon" type="image/png" href="~/blog-html/dist/assets/img/favicon.png" />
+
+    <!--Core CSS -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/blog-html/dist/assets/css/bulma.css">
+    <link rel="stylesheet" href="~/blog-html/dist/assets/css/app.css">
+    <link id="theme-sheet" rel="stylesheet" href="~/blog-html/dist/assets/css/core.css">
+
+</head>
+
+<body class="is-theme-core">
+
+    <!-- Hero (Parallax) and nav -->
+    <div class="hero parallax is-cover is-relative"
+         data-background="/blog_bg.jpg"
+         data-color="#FFFFFF"
+         data-color-opacity="0.8">
+
+        <nav class="navbar navbar-wrapper is-cloned">
+            <div class="container">
+                <!-- Brand -->
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <img src="~/Line42logo.svg" alt="" class="switcher-logo" />
+                        @*<img class="switcher-logo" src="~/blog-html/dist/assets/img/logos/logo/bulkit-core.svg" alt="">*@
+                    </a>
+
+
+
+                    <!-- Responsive toggle -->
+                    <div class="custom-burger" data-target="is-cloned">
+                        <a class="responsive-btn" href="javascript:void(0);">
+                            <span class="menu-toggle">
+                                <span class="icon-box-toggle">
+                                    <span class="rotate">
+                                        <i class="icon-line-top"></i>
+                                        <i class="icon-line-center"></i>
+                                        <i class="icon-line-bottom"></i>
+                                    </span>
+                                </span>
+                            </span>
+                        </a>
+                    </div>
+                    <!-- /Responsive toggle -->
+                </div>
+
+                <!-- Navbar menu -->
+                <div id="is-cloned" class="navbar-menu">
+                    <!-- Navbar end -->
+                    <div class="navbar-end">
+                        <partial name="_LoginPartial" />
+                    </div>
                 </div>
             </div>
         </nav>
-        @if ((string)ViewData["IncludeHeader"] == "true")
-        {
-            <section id="hero" class="d-flex flex-column justify-content-center">
-                <div class="container">
-                    <div class="row text-center">
-                        <div class="col">
-                            <h1>@ViewData["Title"]</h1>
+
+        <nav class="navbar navbar-wrapper is-transparent is-static">
+            <div class="container">
+                <!-- Brand -->
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <img src="~/Line42logo.svg" alt="" class="switcher-logo" />
+                        @*<img class="switcher-logo" src="~/blog-html/dist/assets/img/logos/logo/bulkit-core.svg" alt="">*@
+                    </a>
+
+                    <!-- Responsive toggle -->
+                    <div class="custom-burger" data-target="is-static">
+                        <a class="responsive-btn" href="javascript:void(0);">
+                            <span class="menu-toggle">
+                                <span class="icon-box-toggle">
+                                    <span class="rotate">
+                                        <i class="icon-line-top"></i>
+                                        <i class="icon-line-center"></i>
+                                        <i class="icon-line-bottom"></i>
+                                    </span>
+                                </span>
+                            </span>
+                        </a>
+                    </div>
+                    <!-- /Responsive toggle -->
+                </div>
+
+                <div id="is-static" class="navbar-menu">
+                    <!-- Navbar Start -->
+                    <div class="navbar-start">
+                        <!-- Dropdown -->
+                        <div class="navbar-item is-button is-centered-tablet">
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <a asp-controller="Blogs" asp-action="Index" class="button btn-align primary-btn btn-outlined raised is-square">Admin</a> }
+                            else if (User.IsInRole("Moderator"))
+                            {
+                                <a asp-controller="Comments" asp-action="Index" class="button btn-align primary-btn btn-outlined raised is-square">Moderator</a>}
                         </div>
                     </div>
                 </div>
-            </section>
-        }
-    </header>
 
-    <main role="main">
-        @RenderBody()
-    </main>
+                <!-- Navbar menu -->
+                <div id="is-static" class="navbar-menu">
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2020 - CodingBlog - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                    <!-- Navbar end -->
+                    <div class="navbar-end">
+                        <partial name="_LoginPartial" />
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <!-- Hero image -->
+        <div id="main-hero" class="hero-body">
+            <div class="container has-text-centered">
+                <div class="columns is-vcentered">
+                    <div class="column is-6 is-offset-3 has-text-centered is-subheader-caption has-search">
+                        <h1 class="title is-2">
+                            BLOG
+                        </h1>
+                        <h2 class="subtitle">Lorem ipsum dolor sit amet consectetur elit.</h2>
+                        <div class="search-area is-rounded">
+                            <div class="control has-icons-left">
+                                <form asp-action="Index" asp-controller="Home" method="get">
+                                    <input class="input is-large" name="query" type="text" placeholder="Search...">
+                                    <span class="icon is-small is-left">
+                                        <i class="sl sl-icon-magnifier"></i>
+                                    </span>
+                                    <div class="search-button">
+                                        <button type="submit" class="button primary-btn is-bold">Search</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </footer>
+    </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/list.js/1.5.0/list.min.js"></script>
-    <script src="https://use.fontawesome.com/3312a5a81e.js"></script>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    <script>
+    <!-- Blog post list section -->
+    <div class="section blog-section">
+        <div class="container">
+            <div class="columns">
 
-        function EditComment(id) {
-            document.getElementById(`comment-form-id-${id}`).style.display = "block";
-        }
-        function CancelEditComment(id) {
-            document.getElementById(`comment-form-id-${id}`).style.display = "none";
-        }
+                @RenderBody()
 
-        let toggle = false;
-        function toggleNew() {
-            addNewOptionsPopUp = document.getElementById('add-options-wrapper');
-            if (toggle) {
-                addNewOptionsPopUp.style.display = "none";
-                toggle = false;
-            } else {
-                addNewOptionsPopUp.style.display = "block";
-                toggle = true;
+                <div class="column is-4">
+
+                    <div class="blog-sidebar">
+
+                        <!-- Search blog -->
+                        <div class="control has-icons-right blog-sidebar-search">
+                            <form id="search-form" asp-controller="Home" asp-action="Index" method="get"></form>
+                            <input form="search-form" class="input is-large" name="query" id="search-on-enter-input" type="text" placeholder="Search posts...">
+                            <span class="icon is-small is-right">
+                                <i class="sl sl-icon-magnifier"></i>
+                            </span>
+                        </div>
+
+
+                        <!--Categories-->
+                        <div class="blog-sidebar-categories">
+                            <h4>Categories</h4>
+
+                            <div class="blog-sidebar-categories-inner">
+                                <!--Category-->
+                                @foreach (var blog in (await sidebarService.GetBlogs()))
+                                {
+                                    <a asp-controller="Home" asp-action="Category" asp-route-id="@blog.Id" class="blog-sidebar-category">
+                                        <span>@blog.Name</span>
+                                        <div class="post-count">
+                                            <span>@blog.Posts.Where(p => p.IsPublished == true).Count()</span>
+                                        </div>
+                                    </a>
+                                }
+                            </div>
+                        </div>
+
+                        <!--Recent Posts-->
+                        <div class="blog-sidebar-posts">
+                            <h4>Recent Posts</h4>
+
+                            <div class="blog-sidebar-posts-inner">
+
+                                @foreach (var recentPost in (await sidebarService.GetRecentPosts(4)))
+                                {
+                                    <a asp-controller="Posts" asp-action="Details" asp-route-id="@recentPost.Id" class="blog-sidebar-post">
+                                        <div class="post-image">
+                                            @if (recentPost.Image != null)
+                                            {
+                                                <img src="@ImageHelper.GetImage(recentPost)" alt="">
+                                            }
+                                        </div>
+                                        <div class="post-content">
+                                            <h3>@recentPost.Title</h3>
+                                            <div class="meta">
+                                                <img src="~/josh_picture.jpg" alt="">
+                                                <span>Joshua Peters</span>
+                                            </div>
+                                        </div>
+                                    </a>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+
+
+        </div>
+    </div>
+
+    <footer class="footer-light-medium">
+        <div class="container">
+            @if (!User.Identity.IsAuthenticated)
+            {
+            <div class="footer-head">
+                <div class="head-text">
+                    <h3>Have thoughts on tech?</h3>
+                    <p>Create your free account now to share your thoughts in the comments</p>
+                </div>
+                <div class="head-action">
+                    <div class="buttons">
+                        <a class="button primary-btn raised action-button is-bold" asp-area="Identity" asp-page="/Account/Register" target="_blank">Sign Up</a>
+                        <a class="button chat-button" asp-area="Identity" asp-page="/Account/Login" target="_blank">Sign In</a>
+                    </div>
+                </div>
+            </div>
             }
-        }
+            <div class="columns footer-body">
+                <!-- Column -->
+                <div class="column is-centered">
+                    <div class="pt-10 pb-10">
+                        <img class="small-footer-logo" src="~/blog-html/dist/assets/img/logos/bulkit-logo-g.png" alt="">
+                        <div class="footer-description">
+                            Coding Blog is written for developers. Here I focus on popular tech and
+                            my future predictions for technology.
+                        </div>
+                    </div>
+                    <div>
+                        <span class="moto">Website coded by Joshua Peters</span>
+                        <div class="social-links">
+                            <a href="#">
+                                <span class="icon"><i class="fa fa-facebook"></i></span>
+                            </a>
+                            <a href="#">
+                                <span class="icon"><i class="fa fa-twitter"></i></span>
+                            </a>
+                            <a href="#">
+                                <span class="icon"><i class="fa fa-linkedin"></i></span>
+                            </a>
+                            <a href="#">
+                                <span class="icon"><i class="fa fa-dribbble"></i></span>
+                            </a>
+                            <a href="#">
+                                <span class="icon"><i class="fa fa-github"></i></span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
 
+            </div>
+            <div class="footer-copyright has-text-centered">
+                <p>&copy; 2020 | <a href="https://cssninja.io">Joshua Peters</a> | All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>    <!-- Back To Top Button -->
+    <div id="backtotop"><a href="#"></a></div>
+    <!-- Concatenated jQuery and plugins -->
+    <script src="~/blog-html/dist/assets/js/app.js"></script>
 
-        var postList = new List('post-container', {
-            page: 10,
-            pagination: true
+    <!-- Bulkit js -->
+    <script src="~/blog-html/dist/assets/js/functions.js"></script>
+    <script src="~/blog-html/dist/assets/js/auth.js"></script>
+    <script src="~/blog-html/dist/assets/js/contact.js"></script>
+    <script src="~/blog-html/dist/assets/js/main.js"></script>
+    <script>
+        $("#search-on-enter-input").keypress(function (event) {
+            if (event.which == 13) {
+                event.preventDefault();
+                $("#search-form").submit();
+            }
         });
     </script>
     @RenderSection("Scripts", required: false)
+    <!-- Landing page js -->
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@*<!DOCTYPE html>
+    <html lang="zxx" class="js">
+    <head>
+        <meta charset="utf-8">
+        <meta name="author" content="Softnio">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <!-- Fav Icon  -->
+        <link rel="shortcut icon" href="images/favicon.png">
+        <!-- Site Title  -->
+        <title>Blog Sidebar Right | ICO Crypto - ICO Landing Page &amp; Multi-Purpose Cryptocurrency HTML Template</title>
+        <!-- Bundle and Base CSS -->
+        <link rel="stylesheet" href="~/main-html/assets/css/vendor.bundle.css?ver=192">
+        <link rel="stylesheet" href="~/main-html/assets/css/style.css?ver=192" id="changeTheme">
+        <!-- Extra CSS -->
+        <link rel="stylesheet" href="~/main-html/assets/css/theme.css?ver=192">
+
+
+
+
+    </head>
+
+
+
+    <body class="nk-body body-wider bg-light-alt">
+
+        <div class="nk-wrap">
+            <header class="nk-header page-header is-transparent is-sticky is-shrink" id="header">
+                <!-- Header @@s -->
+                <div class="header-main">
+                    <div class="header-container container">
+                        <div class="header-wrap">
+                            <!-- Logo @@s -->
+                            <div class="header-logo logo">
+                                <a href="./" class="logo-link">
+                                    <img class="logo-dark" src="images/logo.png" srcset="images/logo2x.png 2x" alt="logo">
+                                    <img class="logo-light" src="images/logo-full-white.png" srcset="images/logo-full-white2x.png 2x" alt="logo">
+                                </a>
+                            </div>
+
+                            <!-- Menu Toogle @@s -->
+                            <div class="header-nav-toggle">
+                                <a href="#" class="navbar-toggle" data-menu-toggle="header-menu">
+                                    <div class="toggle-line">
+                                        <span></span>
+                                    </div>
+                                </a>
+                            </div>
+                            <!-- Menu @@s -->
+                            <div class="header-navbar">
+                                <nav class="header-menu" id="header-menu">
+                                    <partial name="_LoginPartial" />
+
+                                    @ *<ul class="menu-btns">
+                                            <li><a href="page-login.html" class="btn btn-md btn-auto btn-grad no-change"><span>Login</span></a></li>
+                                        </ul>* @
+                            </nav>
+                        </div><!-- .header-navbar @@e -->
+                    </div>
+                </div>
+            </div><!-- .header-main @@e -->
+<!-- Banner @@s -->
+<div class="header-banner bg-theme-grad">
+    <div class="nk-banner">
+        <div class="banner banner-page">
+            <div class="banner-wrap">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-xl-6 col-lg-9">
+                            <div class="banner-caption cpn tc-light text-center">
+                                <div class="cpn-head">
+                                    <h2 class="title ttu">Blog Sidebar Right</h2>
+                                    <p>We designed a brand-new cool design and lots of features, the latest version of the template supports advanced block base scenarios, and more.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!-- .nk-banner -->
+    <div class="nk-ovm shape-a-sm"></div>
+</div>
+<!-- .header-banner @@e -->
+        </header>
+
+<main class="nk-pages">
+    @RenderBody()
+</main>
+
+<footer class="nk-footer bg-theme-grad">
+    <section class="section section-footer tc-light bg-transparent">
+        <div class="container">
+            <!-- Block @@s -->
+            <div class="nk-block block-footer">
+                <div class="row">
+                    <div class="col-lg-2 col-sm-4 mb-4 mb-sm-0">
+                        <div class="wgs wgs-menu">
+                            <h6 class="wgs-title">Company</h6>
+                            <div class="wgs-body">
+                                <ul class="wgs-links">
+                                    <li><a href="#">About Us</a></li>
+                                    <li><a href="#">Meet Our Team</a></li>
+                                    <li><a href="#">Advisors</a></li>
+                                    <li><a href="#">Contact Us</a></li>
+                                    <li><a href="#">Insights</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div><!-- .col -->
+                    <div class="col-lg-2 col-sm-4 mb-4 mb-sm-0">
+                        <div class="wgs wgs-menu">
+                            <h6 class="wgs-title">Legal</h6>
+                            <div class="wgs-body">
+                                <ul class="wgs-links">
+                                    <li><a href="#">Terms &amp; Conditions</a></li>
+                                    <li><a href="#">Privacy Policy</a></li>
+                                    <li><a href="#">Terms of Sales</a></li>
+                                    <li><a href="#">Whitepaper</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div><!-- .col -->
+                    <div class="col-lg-2 col-sm-4 mb-4 mb-sm-0">
+                        <div class="wgs wgs-menu">
+                            <h6 class="wgs-title">Quick Links</h6>
+                            <div class="wgs-body">
+                                <ul class="wgs-links">
+                                    <li><a href="#">Ecosystems</a></li>
+                                    <li><a href="#">Tokens</a></li>
+                                    <li><a href="#">Roadmaps</a></li>
+                                    <li><a href="#">Faqs</a></li>
+                                    <li><a href="#">Login</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div><!-- .col -->
+                    <div class="col-lg-6 mb-4 mb-lg-0 order-lg-first">
+                        <div class="wgs wgs-text">
+                            <div class="wgs-body">
+                                <a href="./" class="wgs-logo">
+                                    <img src="images/logo-full-white.png" srcset="images/logo-full-white2x.png 2x" alt="logo">
+                                </a>
+                                <p>Copyright © 2018 ICO Crypto. <br>ABN: 2018AD947. All rights reserved. </p>
+                                <p class="copyright-text">Template by <a href="https://softnio.com/">Softnio</a>. Handcrafted by iO.</p>
+                            </div>
+                        </div>
+                    </div><!-- .col -->
+                </div><!-- .row -->
+            </div><!-- .block @@e -->
+        </div>
+    </section>
+    <div class="nk-ovm shape-b"></div>
+</footer>
+    </div>
+
+<div class="preloader"><span class="spinner spinner-round"></span></div>
+
+<!-- JavaScript -->
+<script src="~/main-html/assets/js/jquery.bundle.js?ver=192"></script>
+<script src="~/main-html/assets/js/scripts.js?ver=192"></script>
+<script src="~/main-html/assets/js/charts.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/list.js/2.3.0/list.min.js"></script>
+@RenderSection("Scripts", required: false)
 </body>
 </html>
+*@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@*<!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>@ViewData["Title"] - CodingBlog</title>
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="~/css/site.css" />
+        <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    </head>
+
+    <body>
+        <header>
+            <nav class="navbar  navbar-light bg-highlight  navbar-expand-sm navbar-toggleable-sm box-shadow">
+                <div class="container">
+                    <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index" asp-route-id="">CodingBlog</a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <a asp-controller="Blogs" asp-action="Index" class="btn btn-primary">Admin</a>
+                    }
+                    else if (User.IsInRole("Moderator"))
+                    {
+                        <a asp-controller="Comments" asp-action="Index" class="btn btn-primary">Comment Stream</a>
+                    }
+
+                    <div class="navbar-collapse  collapse d-sm-inline-flex flex-sm-row-reverse">
+                        <partial name="_LoginPartial" />
+                    </div>
+                </div>
+            </nav>
+            @if ((string)ViewData["IncludeHeader"] == "true")
+            {
+                <section id="hero" class="d-flex flex-column justify-content-center">
+                    <div class="container">
+                        <div class="row text-center">
+                            <div class="col">
+                                <h1>@ViewData["Title"]</h1>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            }
+        </header>
+
+        <main role="main">
+            @RenderBody()
+        </main>
+
+        <footer class="border-top footer text-muted">
+            <div class="container">
+                &copy; 2020 - CodingBlog - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            </div>
+        </footer>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/list.js/1.5.0/list.min.js"></script>
+        <script src="https://use.fontawesome.com/3312a5a81e.js"></script>
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+        <script>
+
+            function EditComment(id) {
+                document.getElementById(`comment-form-id-${id}`).style.display = "block";
+            }
+            function CancelEditComment(id) {
+                document.getElementById(`comment-form-id-${id}`).style.display = "none";
+            }
+
+            let toggle = false;
+            function toggleNew() {
+                addNewOptionsPopUp = document.getElementById('add-options-wrapper');
+                if (toggle) {
+                    addNewOptionsPopUp.style.display = "none";
+                    toggle = false;
+                } else {
+                    addNewOptionsPopUp.style.display = "block";
+                    toggle = true;
+                }
+            }
+
+
+            var postList = new List('post-container', {
+                page: 10,
+                pagination: true
+            });
+        </script>
+        @RenderSection("Scripts", required: false)
+    </body>
+    </html>*@

@@ -14,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using CodingBlog.Models;
 using CodingBlog.Utilities;
+using CodingBlog.Services;
 //using CodingBlog.Utilities;
 
 namespace CodingBlog
@@ -32,11 +33,13 @@ namespace CodingBlog
         {
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseNpgsql(DataHelper.GetConnectionString(Configuration)));
-            services.AddDefaultIdentity<BlogUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            services.AddDefaultIdentity<BlogUser>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
             services.AddRazorPages();
+
+            services.AddScoped<ISidebarService, SidebarService>();
 
             //services.AddTransient<SeedHelper>();
         }

@@ -1,5 +1,7 @@
 ﻿@model CodingBlog.Models.Post
 @using CodingBlog.Helpers
+@using CodingBlog.Services
+@inject ISidebarService sidebarService
 
 @{
     ViewData["Title"] = Model.Title;
@@ -11,96 +13,358 @@
     ViewData["IncludeHeader"] = "true";
 }
 
-@*<div id="blogs-container">
-        <a asp-controller="Home" asp-action="Index" asp-route-id="@Model.Blog.Id" class="blog-category">@Model.Blog.Name</a>
-    </div>*@
 
-<div id="blog-post-header">
-    <div id="header-wrapper">
-        <div class="header-section grow content">
-            <p>
-                <a asp-controller="Home" asp-action="Index" asp-route-id="@Model.Blog.Id"><strong>@Model.Blog.Name.ToUpper()</strong></a> | 3 MINUTE READ
-            </p>
-            <h1>@Model.Title</h1>
-            <div class="author-container">
-                <div class="author-img-wrapper">
-                    <img src="~/content/author-img.jpg" alt="" />
-                </div>
-                <div class="author-content">
-                    Written By Joshua Peters
-                    <div><strong>PORTFOLIO</strong></div>
+
+
+
+<div class="column is-8 is-offset-2">
+
+    <!-- Single Post -->
+    <div class="is-single-post">
+        <div class="featured-post-image">
+            <img src="https://via.placeholder.com/1200x300" data-demo-src="assets/img/demo/posts/post-1.jpg"
+                 alt="">
+            <div class="post-date">
+                <div class="post-date-inner">
+                    <span>@Model.Created.ToString("MMM")</span>
+                    <span>@Model.Created.ToString("dd")</span>
                 </div>
             </div>
         </div>
-        <div class="header-section image-border-radius">
-            @if(Model.Image != null)
-            {
-            <img src="@ImageHelper.GetImage(Model)" alt="" />
-            }
+
+        <div class="featured-post-body">
+            <div class="featured-post-title">
+                <div class="title-meta">
+                    <h2 class="post-title">@Model.Title</h2>
+                    <h4 class="post-subtitle">
+                        <span>by <a class="author-name" href="javascript: void(0)">Joshua Peters</a></span>
+                        <i class="fa fa-circle"></i>
+                        <span>Posted in <a asp-controller="Home" asp-action="Category" asp-route-id="@Model.BlogId">@Model.Blog.Name</a></span>
+                    </h4>
+                </div>
+            </div>
+
+            <div class="content">
+                @Html.Raw(Model.Content)
+            </div>
+
+            <div class="post-author">
+                <div class="post-author-avatar">
+                    <img src="~/josh_picture.jpg" alt=""
+                         data-demo-src="assets/img/avatars/carolin.png">
+                </div>
+                <div class="post-author-meta">
+                    <h2 class="post-author-title"><a>Joshua Peters</a></h2>
+                    <h4>Full Stack Developer - ASP.NET </h4>
+                    <p>
+                        I am a full stack developer based out of Indiana. Currently my focus is on
+                        using Blazor with my ASP.NET apps to utilize WebAssembly for performance.
+                    </p>
+                </div>
+            </div>
+
+            <!--Related Posts-->
+            <div class="related-posts">
+                <h3 class="related-posts-head">You might also like</h3>
+
+                <div class="columns">
+
+                    <!--Related Post Card-->
+                    @foreach (var post in (await sidebarService.GetSuggestedPosts(2, Model.Id)))
+                    {
+                        <div class="column is-6">
+                            <div class="card blog-grid-item is-related">
+                                <div class="card-image">
+                                    @if (post.Image != null)
+                                    {
+                                        <img class="item-featured-image" src="@ImageHelper.GetImage(post)" alt="">
+                                    }
+                                    <div class="post-date">
+                                        <div class="post-date-inner">
+                                            <span>@post.Created.ToString("MMM")</span>
+                                            <span>@post.Created.ToString("dd")</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-content">
+                                    <div class="featured-post-title">
+                                        <div class="title-meta">
+                                            <h2 class="post-title">
+                                                @post.Title 
+                                            </h2>
+                                            <h4 class="post-subtitle">
+                                                <span>Posted in <a asp-controller="Home" asp-action="Category" asp-route-id="@post.BlogId">@post.Blog.Name</a></span>
+                                            </h4>
+                                        </div>
+                                    </div>
+                                    <a class="read-more-link" asp-controller="Posts" asp-action="Details" asp-route-id="@post.Id">
+                                        Read More <span>&#10230;</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <!--Posts Comments-->
+            <div class="single-comments">
+                <h3 class="single-comments-head">Comments</h3>
+
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <div class="publish-comment">
+                        <h3 class="publish-comment-head">Leave a Comment</h3>
+                        
+                        <form asp-controller="Comments" asp-action="Create">
+                            @Html.Hidden("PostId", Model.Id)
+                            <div class="columns is-multiline">
+                                <div class="column is-12">
+                                    <div class="field">
+                                        <div class="control">
+                                            <textarea class="textarea" name="Content" rows="8" placeholder="Write a comment"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="column is-12">
+                                    <div class="field">
+                                        <div class="control submit-wrap">
+                                            <button type="submit" class="button button-cta primary-btn is-bold raised">Post Comment</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                }
+                else
+                {
+                    <p class="has-text-centered"><a asp-area="Identity" asp-page="/Account/Login" asp-route-returnUrl="@Context.Request.Path" target="_blank">Login</a> to leave a comment</p>
+                }
+
+                <div class="comments-list">
+                    <!-- Comment -->
+                    @foreach (var comment in Model.Comments.OrderByDescending(c => c.Created))
+                    {
+                        <div class="media">
+                            @*<figure class="media-left">
+                        <p class="image is-48x48">
+                            <img src="~/josh_picture.jpg" alt=""
+                                 data-demo-src="assets/img/avatars/elie.jpg">
+                        </p>
+                    </figure>*@
+                            <div class="media-content">
+                                <div class="content">
+                                    <h4 class="title mb-0">@comment.BlogUser.DisplayName</h4>
+                                    <span class="timestamp">@comment.Created.ToString("MMM dd, yyyy")</span>
+                                    <p>
+                                        @Html.Raw(comment.Content)
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+            </div>
+
         </div>
     </div>
+
 </div>
 
-<article class="article-container py-5">
-    <div class="article-wrapper">
-        @Html.Raw(Model.Content)
-    </div>
-</article>
 
-<section class="bg-highlight py-5" id="comment-panel-container">
-    <div class="panel-body">
-        @if (User.Identity.IsAuthenticated)
-        {
-            <form asp-controller="Comments" asp-action="Create">
-                <div class="row p-2">
 
-                    @Html.Hidden("PostId", Model.Id)
-                    <div class="col-12 text-center">
-                        <textarea id="comment-box" name="Content" placeholder="Type your comment"></textarea>
-                    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@*
+    <section class="section bg-white">
+        <div class="container">
+            <div class="nk-block nk-block-blog">
+                <div class="row">
                     <div class="col-12">
-                        <button class="btn btn-primary" type="submit" id="comment-button">Post</button>
+                        <div class="blog-details">
+                            <div class="row justify-content-center">
+                                <div class="col-xl-10 col-lg-12">
+                                    @if (Model.Image != null)
+                                    {
+                                        <div class="blog-featured">
+                                            <img class="round" src="@ImageHelper.GetImage(Model)" alt="featured">
+                                        </div>
+                                    }
+                                </div>
+                                <div class="col-xl-10 col-lg-12">
+                                    <ul class="blog-meta">
+                                        <li><a href="#">@Model.Created.ToString("dd MMM, yyyy")</a></li>
+                                        <li>Joshua Peters</li>
+                                    </ul>
+                                    <div class="blog-content">
+                                        <h2 class="title">@Model.Title</h2>
+                                        @Html.Raw(Model.Content)
+                                    </div>
+                                    <ul class="blog-tags">
+                                        <li><a href="#">bitcoin</a></li>
+                                        <li><a href="#">tokens</a></li>
+                                    </ul>
+                                    <div class="blog-comment">
+                                        <h4 class="title title-md">@Model.Comments.Count() Comments</h4>
+                                        <ul class="comment-list">
+
+                                            @foreach (var comment in Model.Comments.OrderByDescending(c => c.Created))
+                                            {
+                                                <li class="comment-wrap position-relative">
+                                                    <div class="comment-item">
+                                                        <div class="comment-content">
+                                                            <div class="d-flex justify-content-between align-items-center ">
+                                                                <div class="comment-info">
+                                                                    <h6 class="title title-xs">@comment.BlogUser.DisplayName</h6>
+                                                                    <span class="comment-time">@comment.Created.ToString("dd MMM, yyyy hh:mm tt").ToUpper()</span>
+                                                                </div>
+                                                                @if (User.IsInRole("Moderator") || User.IsInRole("Admin"))
+                                                                {
+                                                                    <div class="comment-replay position-absolute" style="top: 10px; right: 20px;">
+                                                                        <a class="link" asp-controller="Comments" asp-action="Edit" asp-route-id="@comment.Id"><span>Moderate</span></a>
+                                                                    </div>
+                                                                }
+
+                                                            </div>
+                                                            <div class="comment-text">
+                                                                <p>@comment.Content</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            }
+                                        </ul>
+
+                                        @if (User.Identity.IsAuthenticated)
+                                        {
+                                            <h4 class="title title-md">Leave A Comment</h4>
+                                            <form asp-controller="Comments" asp-action="Create">
+                                                @Html.Hidden("PostId", Model.Id)
+                                                <div class="field-item">
+                                                    <label class="field-label">Your Comment</label>
+                                                    <div class="field-wrap">
+                                                        <textarea id="comment-box" name="Content" placeholder="Type your comment" class="input-bordered input-textarea" required></textarea>
+                                                    </div>
+                                                </div>
+                                                <button type="submit" class="btn btn-grad">Comment</button>
+                                            </form>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-
                 </div>
-            </form>
+            </div>
+        </div>
+    </section>
+    @*<div id="blog-post-header">
+            <div id="header-wrapper">
+                <div class="header-section grow content">
+                    <p>
+                        <a asp-controller="Home" asp-action="Index" asp-route-id="@Model.Blog.Id"><strong>@Model.Blog.Name.ToUpper()</strong></a> | 3 MINUTE READ
+                    </p>
+                    <h1>@Model.Title</h1>
+                    <div class="author-container">
+                        <div class="author-img-wrapper">
+                            <img src="~/content/author-img.jpg" alt="" />
+                        </div>
+                        <div class="author-content">
+                            Written By Joshua Peters
+                            <div><strong>PORTFOLIO</strong></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="header-section image-border-radius">
+                    @if (Model.Image != null)
+                    {
+                        <img src="@ImageHelper.GetImage(Model)" alt="" />
+                    }
+                </div>
+            </div>
+        </div>
 
-        }
-        else
-        {
-            <div class="text-center">Please <strong><a asp-area="Identity" asp-page="/Account/Login" asp-route-returnurl="@Context.Request.Path#comment-box">login</a></strong> to leave a comment</div>
-        }
-        Comments (@Model.Comments.Count())
-        <table class="table table-responsive-sm">
-            <tbody>
-                @foreach (var comment in Model.Comments.OrderByDescending(c => c.Created))
+        <article class="article-container py-5">
+            <div class="article-wrapper">
+                @Html.Raw(Model.Content)
+            </div>
+        </article>
+
+        <section class="bg-highlight py-5" id="comment-panel-container">
+            <div class="panel-body">
+                @if (User.Identity.IsAuthenticated)
                 {
-                    <tr class="comment-row">
-                        <td style="width:100%;">
-                            <strong>@@@comment.BlogUser.DisplayName</strong><span class="created"> on @comment.Created.ToString("MMM dd, yyyy")</span>
-                            <br />
-                            @comment.Content
-                        </td>
-                        <td class="moderate-button">
-                            <a asp-controller="Comments" asp-action="Edit" asp-route-id="@comment.Id " class="btn btn-warning">Moderate</a>
-                        </td>
-                    </tr>
+                    <form asp-controller="Comments" asp-action="Create">
+                        <div class="row p-2">
+
+                            @Html.Hidden("PostId", Model.Id)
+                            <div class="col-12 text-center">
+                                <textarea id="comment-box" name="Content" placeholder="Type your comment"></textarea>
+                            </div>
+                            <div class="col-12">
+                                <button class="btn btn-primary" type="submit" id="comment-button">Post</button>
+                            </div>
+
+                        </div>
+                    </form>
 
                 }
-            </tbody>
-        </table>
-    </div>
-</section>
+                else
+                {
+                    <div class="text-center">Please <strong><a asp-area="Identity" asp-page="/Account/Login" asp-route-returnurl="@Context.Request.Path#comment-box">login</a></strong> to leave a comment</div>
+                }
+                Comments (@Model.Comments.Count())
+                <table class="table table-responsive-sm">
+                    <tbody>
+                        @foreach (var comment in Model.Comments.OrderByDescending(c => c.Created))
+                        {
+                            <tr class="comment-row">
+                                <td style="width:100%;">
+                                    <strong>@@@comment.BlogUser.DisplayName</strong><span class="created"> on @comment.Created.ToString("MMM dd, yyyy")</span>
+                                    <br />
+                                    @comment.Content
+                                </td>
+                                <td class="moderate-button">
+                                    <a asp-controller="Comments" asp-action="Edit" asp-route-id="@comment.Id " class="btn btn-warning">Moderate</a>
+                                </td>
+                            </tr>
 
-<div id="add-options-wrapper" class="animate__animated animate__bounceIn">
-    <div class="option"><h6>Blog</h6></div>
-    <div class="option"><h6>Post</h6></div>
-</div>
-<button onclick="toggleNew()" id="add-new">
-    <svg viewBox="0 0 16 16" class="bi bi-plus-circle-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-        <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z" />
-    </svg>
-</button>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <div id="add-options-wrapper" class="animate__animated animate__bounceIn">
+            <div class="option"><h6>Blog</h6></div>
+            <div class="option"><h6>Post</h6></div>
+        </div>
+        <button onclick="toggleNew()" id="add-new">
+            <svg viewBox="0 0 16 16" class="bi bi-plus-circle-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z" />
+            </svg>
+        </button>*@
 
 
 

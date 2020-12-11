@@ -1,4 +1,4 @@
-﻿@model CodingBlog.ViewModels.PostBlogVM
+﻿@model CodingBlog.ViewModels.PostIndexVM
 @using CodingBlog.Helpers
 @{
     ViewData["Title"] = "Home of The Blog Posts";
@@ -6,200 +6,401 @@
     ViewData["IncludeHeader"] = "true";
 }
 
-<div id="blogs-container">
-    @foreach (var item in Model.Blogs)
+
+
+<div class="column is-8">
+
+    <!-- Blog post -->
+    @foreach (var post in Model.Posts)
     {
-        string active = "";
-        if ((int?)ViewData["BlogId"] == item.Id)
-        {
-            active = "active";
-        }
-        <a  asp-route-id="@item.Id" class="blog-category @active">
-            @Html.DisplayFor(modelItem => item.Name)
-        </a>
+        <div class="is-post light-bordered">
+            <div class="featured-post-image">
+                @if (post.Image != null)
+                {
+                    <img src="@ImageHelper.GetImage(post)" alt="">
+                }
+
+                <div class="post-date">
+                    <div class="post-date-inner">
+                        <span>@post.Created.ToString("MMM")</span>
+                        <span>@post.Created.ToString("dd")</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="featured-post-body">
+                <div class="featured-post-title">
+                    <div class="title-avatar">
+                        <img src="~/josh_picture.jpg" alt=""
+                             data-demo-src="assets/img/avatars/alan.jpg">
+                    </div>
+                    <div class="title-meta">
+                        <h2 class="post-title">@post.Title</h2>
+                        <h4 class="post-subtitle">
+                            <span>by <a class="author-name" href="#">Joshua Peters</a></span>
+                            <i class="fa fa-circle"></i>
+                            <span>Posted in <a asp-controller="Home" asp-action="Category" asp-route-id="@post.BlogId">@post.Blog.Name</a></span>
+                        </h4>
+                    </div>
+                </div>
+                <p>
+                    @post.Abstract
+                </p>
+
+                <a asp-controller="Posts" asp-action="Details" asp-route-id="@post.Id">
+                    Read More <span>&#10230;</span>
+                </a>
+            </div>
+        </div>
     }
+
+    <div class="load-more has-text-centered">
+        @if (!Model.PagesBehind) 
+        { 
+            <button class="button button-cta" disabled>Prev</button>
+        } 
+        else 
+        {
+            <a asp-controller="Home" asp-action="Index" asp-route-page="@Html.Raw($"{Model.PageNum - 1}")" class="button button-cta">Prev</a>
+        }
+
+        @if (!Model.PagesInFront)
+        {
+            <button class="button button-cta" disabled>Next</button>
+        } 
+        else {
+            <a asp-controller="Home" asp-action="Index" asp-route-page="@Html.Raw($"{Model.PageNum + 1}")" class="button button-cta">Next</a>
+        }
+    </div>
 </div>
 
-<div class="page" id="main-page">
-    <div class="page-wrapper">
-        <div class="left-wrapper">
-            @if (ViewData["Query"] != null)
-            {
-                var count = Model.Posts.Count();
-                if (count == 1)
-                {
-                    <h2 class="text-center">1 result for "@ViewData["Query"]"</h2>
-                }
-                else
-                {
-                    <h2 class="text-center">@count results for "@ViewData["Query"]"</h2>
-                }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@*<section class="section bg-light" id="posts-container">
+    <div class="container">
+        <div class="nk-block nk-block-blog">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="row list">
+                        @foreach (var item in Model.Posts)
+                        {
+                            <div class="col-sm-6">
+                                <div class="blog">
+                                    <div class="blog-photo">
+                                        @if (item.Image != null)
+                                        {
+                                            <img src="@ImageHelper.GetImage(item)" alt="blog-thumb">
+                                        }
+                                    </div>
+                                    <div class="blog-text">
+                                        <ul class="blog-meta">
+                                            <li><a asp-controller="Posts" asp-action="Details" asp-route-id="@item.Id">@item.Created.ToString("dd MMM, yyyy")</a></li>
+                                            <li><a asp-controller="Posts" asp-action="Details" asp-route-id="@item.Id">Joshua Peters</a></li>
+                                        </ul>
+                                        <h4 class="title title-sm"><a asp-controller="Posts" asp-action="Details" asp-route-id="@item.Id">@item.Title</a></h4>
+                                        <p class="abstract">@item.Abstract</p>
+                                    </div>
+                                </div><!-- .blog -->
+                            </div><!-- .col -->
+                        }
+                    </div><!-- .row -->
+                    <nav class="w-100 d-flex">
+                        <ul class="pagination"></ul>
+                    </nav>
+                </div><!-- .col -->
+                <div class="col-lg-4">
+                    <div class="sidebar ml-lg-4 mt-5 mt-lg-0">
+                        <div class="wgs wgs-search">
+                            <span class="field-inline">
+                                <input type="text" placeholder="Search Keyword" class="input-bordered search">
+                                <button class="btn btn-primary btn-icon"><em class="ti ti-search"></em></button>
+                            </span>
+                        </div>
+                        <div class="wgs wgs-category">
+                            <h6 class="wgs-title">Category</h6>
+                            <div class="wgs-body">
+                                <ul class="wgs-links wgs-links-category">
+                                    <li><a href="#">Blockchain</a></li>
+                                    <li><a href="#">Cryptocurrency</a></li>
+                                    <li><a href="#">Technology</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="wgs wgs-tags">
+                            <h6 class="wgs-title">Tags</h6>
+                            <div class="wgs-body">
+                                <ul class="wgs-links wgs-links-tags">
+                                    <li><a href="#">ethereum</a></li>
+                                    <li><a href="#">bitcoin</a></li>
+                                    <li><a href="#">released</a></li>
+                                    <li><a href="#">tokens</a></li>
+                                    <li><a href="#">roadmap</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="wgs wgs-archive">
+                            <h6 class="wgs-title">Archive</h6>
+                            <div class="wgs-body">
+                                <select name="post-archive" class="select" data-select2-placehold="Select Month">
+                                    <option label="placeholder"></option>
+                                    <option value="All">All</option>
+                                    <option value="January">January</option>
+                                    <option value="February">February</option>
+                                    <option value="March">March</option>
+                                    <option value="April">April</option>
+                                    <option value="May">May</option>
+                                    <option value="June">June</option>
+                                    <option value="July">July</option>
+                                    <option value="August">August</option>
+                                    <option value="September">September</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="wgs wgs-cta bg-theme tc-light round">
+                            <div class="wgs-body">
+                                <div class="title title-sm">How can we help you?</div>
+                                <p>Contact our support team if you need help or have any questions?</p>
+                                <a href="#" class="btn btn-md btn-light">Contact Us</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- .row -->
+        </div><!-- .nk-block -->
+    </div><!-- .container -->
+</section><!-- .section -->
+
+
+@section Scripts{
+    <script>
+        var values = [
+            { name: 'Jonny', city: 'Stockholm' }
+            , { name: 'Jonas', city: 'Berlin' }
+        ];
+
+        var options = {
+            valueNames: ['title', 'abstract'],
+            page: 5,
+            pagination: true
+        };
+
+        var postsList = new List('posts-container', options, values);
+    </script>
+}
+
+
+@*<div id="blogs-container">
+        @foreach (var item in Model.Blogs)
+        {
+            string active = "";
+            if ((int?)ViewData["BlogId"] == item.Id)
+            {
+                active = "active";
             }
-            <ul class="ul-post-container">
-                @{
-                    bool admin = false;
-                }
-                @if (User.IsInRole("Admin"))
+            <a  asp-route-id="@item.Id" class="blog-category @active">
+                @Html.DisplayFor(modelItem => item.Name)
+            </a>
+        }
+    </div>
+
+    <div class="page" id="main-page">
+        <div class="page-wrapper">
+            <div class="left-wrapper">
+                @if (ViewData["Query"] != null)
                 {
-                    admin = true;
+                    var count = Model.Posts.Count();
+                    if (count == 1)
+                    {
+                        <h2 class="text-center">1 result for "@ViewData["Query"]"</h2>
+                    }
+                    else
+                    {
+                        <h2 class="text-center">@count results for "@ViewData["Query"]"</h2>
+                    }
+
                 }
-                @foreach (var item in Model.Posts)
-                {
-                    var Id = item.Id;
-                    <li class="post-card">
-                        <a asp-controller="Posts" asp-action="Details" asp-route-id="@item.Id">
-                            @if (item.Image != null)
+                <ul class="ul-post-container">
+                    @{
+                        bool admin = false;
+                    }
+                    @if (User.IsInRole("Admin"))
+                    {
+                        admin = true;
+                    }
+                    @foreach (var item in Model.Posts)
+                    {
+                        var Id = item.Id;
+                        <li class="post-card">
+                            <a asp-controller="Posts" asp-action="Details" asp-route-id="@item.Id">
+                                @if (item.Image != null)
+                                {
+                                    <div class="post-thumbnail">
+                                        <img src="@ImageHelper.GetImage(item)" alt="" />
+                                    </div>
+                                }
+                                <div class="post-card-content-container">
+                                    <div class="meta-author">By Joshua Peters, November 23, 2016</div>
+                                    <div class="meta-title"><h4>@Html.DisplayFor(modelItem => item.Title)</h4></div>
+                                    <p class="meta-abstract">@Html.DisplayFor(modelItem => item.Abstract)</p>
+                                    <div class="post-tag-list">
+                                        JavaScript, HTML5
+                                    </div>
+                                </div>
+                            </a>
+                            @if (admin)
                             {
-                                <div class="post-thumbnail">
-                                    <img src="@ImageHelper.GetImage(item)" alt="" />
+                                <div class="admin-edit">
+                                    <a asp-controller="Posts" asp-action="Edit" asp-route-id="@Id" class="admin-edit-link">
+                                        <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-pencil-square" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456l-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
+                                            <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
+                                        </svg>
+                                    </a>
                                 </div>
                             }
-                            <div class="post-card-content-container">
-                                <div class="meta-author">By Joshua Peters, November 23, 2016</div>
-                                <div class="meta-title"><h4>@Html.DisplayFor(modelItem => item.Title)</h4></div>
-                                <p class="meta-abstract">@Html.DisplayFor(modelItem => item.Abstract)</p>
-                                <div class="post-tag-list">
-                                    JavaScript, HTML5
+                        </li>
+                    }
+                </ul>
+
+            </div>
+            <div class="right-wrapper">
+                <div class="sticky">
+                    <div class="sidebar-box">
+                        <form asp-action="Index" asp-route-id="" class="search-form" method="get">
+                            <div class="input-group mb-3">
+                                <input type="text" name="query" class="form-control" placeholder="Search...">
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary" id="search-button" type="submit">
+                                        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-search" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd" d="M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z" />
+                                            <path fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z" />
+                                        </svg>
+                                    </button>
                                 </div>
                             </div>
-                        </a>
-                        @if (admin)
-                        {
-                            <div class="admin-edit">
-                                <a asp-controller="Posts" asp-action="Edit" asp-route-id="@Id" class="admin-edit-link">
-                                    <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-pencil-square" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456l-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
-                                        <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
-                                    </svg>
+                        </form>
+                    </div>
+
+                    <div class="sidebar-box">
+                        <div class="sidebar-box-header">
+                            <h4>Popular Tags</h4>
+                        </div>
+                        <div class="sidebar-box-content">
+                            <div class="tag-container">
+                                <a href="" class="tag">JavaScipt</a>
+                                <a href="" class="tag">.NET Core</a>
+                                <a href="" class="tag">CSS</a>
+                                <a href="" class="tagy">HTML</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="sidebar-box popular-posts">
+                        <div class="sidebar-box-header">
+                            <h4>Popular Posts</h4>
+                        </div>
+                        <div class="sidebar-box-content">
+                            <div class="popular-post-wrapper">
+                                <a href="#" class="popular-post">
+                                    <div class="left-div">
+                                        <img src="https://picsum.photos/seed/picsum/500/500" alt="" />
+                                    </div>
+                                    <div class="right-div">
+                                        <span>6 Things You Don't Know About JavaScript</span>
+                                    </div>
+                                </a>
+                                <a href="#" class="popular-post">
+                                    <div class="left-div">
+                                        <img src="https://picsum.photos/seed/picsum/500/500" alt="" />
+                                    </div>
+                                    <div class="right-div">
+                                        <span>6 Things You Don't Know About JavaScript</span>
+                                    </div>
+                                </a>
+                                <a href="#" class="popular-post">
+                                    <div class="left-div">
+                                        <img src="https://picsum.photos/seed/picsum/500/500" alt="" />
+                                    </div>
+                                    <div class="right-div">
+                                        <span>6 Things You Don't Know About JavaScript</span>
+                                    </div>
                                 </a>
                             </div>
-                        }
-                    </li>
-                }
-            </ul>
-
-        </div>
-        <div class="right-wrapper">
-            <div class="sticky">
-                <div class="sidebar-box">
-                    <form asp-action="Index" asp-route-id="" class="search-form" method="get">
-                        <div class="input-group mb-3">
-                            <input type="text" name="query" class="form-control" placeholder="Search...">
-                            <div class="input-group-append">
-                                <button class="btn btn-primary" id="search-button" type="submit">
-                                    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-search" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                        <path fill-rule="evenodd" d="M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z" />
-                                        <path fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z" />
-                                    </svg>
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-
-                <div class="sidebar-box">
-                    <div class="sidebar-box-header">
-                        <h4>Popular Tags</h4>
-                    </div>
-                    <div class="sidebar-box-content">
-                        <div class="tag-container">
-                            <a href="" class="tag">JavaScipt</a>
-                            <a href="" class="tag">.NET Core</a>
-                            <a href="" class="tag">CSS</a>
-                            <a href="" class="tagy">HTML</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="sidebar-box popular-posts">
-                    <div class="sidebar-box-header">
-                        <h4>Popular Posts</h4>
-                    </div>
-                    <div class="sidebar-box-content">
-                        <div class="popular-post-wrapper">
-                            <a href="#" class="popular-post">
-                                <div class="left-div">
-                                    <img src="https://picsum.photos/seed/picsum/500/500" alt="" />
-                                </div>
-                                <div class="right-div">
-                                    <span>6 Things You Don't Know About JavaScript</span>
-                                </div>
-                            </a>
-                            <a href="#" class="popular-post">
-                                <div class="left-div">
-                                    <img src="https://picsum.photos/seed/picsum/500/500" alt="" />
-                                </div>
-                                <div class="right-div">
-                                    <span>6 Things You Don't Know About JavaScript</span>
-                                </div>
-                            </a>
-                            <a href="#" class="popular-post">
-                                <div class="left-div">
-                                    <img src="https://picsum.photos/seed/picsum/500/500" alt="" />
-                                </div>
-                                <div class="right-div">
-                                    <span>6 Things You Don't Know About JavaScript</span>
-                                </div>
-                            </a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div id="add-options-wrapper" class="animate__animated animate__bounceIn">
-        <div class="option"><h6>Blog</h6></div>
-        <div class="option"><h6>Post</h6></div>
-    </div>
-    <button onclick="toggleNew()" id="add-new">
-        <svg viewBox="0 0 16 16" class="bi bi-plus-circle-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-            <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z" />
-        </svg>
-    </button>
-</div>
+        <div id="add-options-wrapper" class="animate__animated animate__bounceIn">
+            <div class="option"><h6>Blog</h6></div>
+            <div class="option"><h6>Post</h6></div>
+        </div>
+        <button onclick="toggleNew()" id="add-new">
+            <svg viewBox="0 0 16 16" class="bi bi-plus-circle-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z" />
+            </svg>
+        </button>
+    </div>*@
 
 @*<footer class="border-top">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-4">
-                
-            </div>
-            <div class="col-4">
-                <div class="popular-post-wrapper">
-                    <div class="sidebar-box-header">
-                        <h4>Popular Posts</h4>
-                    </div>
-                    <a href="#" class="popular-post">
-                        <div class="left-div">
-                            <img src="https://picsum.photos/seed/picsum/500/500" alt="" />
-                        </div>
-                        <div class="right-div">
-                            <span>6 Things You Don't Know About JavaScript</span>
-                        </div>
-                    </a>
-                    <a href="#" class="popular-post">
-                        <div class="left-div">
-                            <img src="https://picsum.photos/seed/picsum/500/500" alt="" />
-                        </div>
-                        <div class="right-div">
-                            <span>6 Things You Don't Know About JavaScript</span>
-                        </div>
-                    </a>
-                    <a href="#" class="popular-post">
-                        <div class="left-div">
-                            <img src="https://picsum.photos/seed/picsum/500/500" alt="" />
-                        </div>
-                        <div class="right-div">
-                            <span>6 Things You Don't Know About JavaScript</span>
-                        </div>
-                    </a>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4">
+
                 </div>
+                <div class="col-4">
+                    <div class="popular-post-wrapper">
+                        <div class="sidebar-box-header">
+                            <h4>Popular Posts</h4>
+                        </div>
+                        <a href="#" class="popular-post">
+                            <div class="left-div">
+                                <img src="https://picsum.photos/seed/picsum/500/500" alt="" />
+                            </div>
+                            <div class="right-div">
+                                <span>6 Things You Don't Know About JavaScript</span>
+                            </div>
+                        </a>
+                        <a href="#" class="popular-post">
+                            <div class="left-div">
+                                <img src="https://picsum.photos/seed/picsum/500/500" alt="" />
+                            </div>
+                            <div class="right-div">
+                                <span>6 Things You Don't Know About JavaScript</span>
+                            </div>
+                        </a>
+                        <a href="#" class="popular-post">
+                            <div class="left-div">
+                                <img src="https://picsum.photos/seed/picsum/500/500" alt="" />
+                            </div>
+                            <div class="right-div">
+                                <span>6 Things You Don't Know About JavaScript</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="col"></div>
             </div>
-            <div class="col"></div>
         </div>
-    </div>
-    &copy; 2020 - CodingBlog - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-</footer>*@
+        &copy; 2020 - CodingBlog - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    </footer>*@
 
 
 @*<div id="page">

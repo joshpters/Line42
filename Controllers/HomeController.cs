@@ -24,34 +24,70 @@ namespace CodingBlog.Controllers
             _logger = logger;
         }
 
-        public async Task<IActionResult> Index(int? id, string? query)
+        public async Task<IActionResult> Category(int? id)
         {
-            var blogs = await _context.Blog.Where(p => p.Posts.Count() > 0).ToListAsync();
-            if (id != null)
+            if(id == null)
             {
-                var blog = await _context.Blog.FindAsync(id);
-                if (blog != null)
-                {
-                    var postsFiltered = await _context.Post.Where(p => p.BlogId == id && p.IsPublished).OrderByDescending(p => p.Created).ToListAsync();
-                    var viewModelFiltered = new PostBlogVM(postsFiltered, blogs);
-                    ViewData["BlogId"] = id;
-                    return View(viewModelFiltered);
-                }
+                return NotFound();
             }
 
-            if (query != null)
-            {
-                var postsSearchFiltered = await _context.Post.Where(p => p.Content.Contains(query) && p.IsPublished).OrderByDescending(p => p.Created).ToListAsync();
-                var viewModelSearchFiltered = new PostBlogVM(postsSearchFiltered, blogs);
-                ViewData["Query"] = query;
-                return View(viewModelSearchFiltered);
-            }
+            var posts = await _context.Post
+                .Include(p => p.Blog)
+                .Where(p => p.IsPublished == true && p.BlogId == id)
+                .ToListAsync();
 
-            var posts = await _context.Post.Where(p => p.IsPublished).OrderByDescending(p => p.Created).ToListAsync();
-            var viewModel = new PostBlogVM(posts, blogs);
+            ViewData["BlogId"] = id;
 
-            return View(viewModel);
+            return View(nameof(Index), new PostIndexVM(posts));
         }
+
+        public async Task<IActionResult> Index(string query, int page = 0)
+        {
+            var posts = _context.Post.Include(p => p.Blog).Where(p => p.IsPublished == true);
+
+            if(query != null)
+            {
+                posts = posts.Where(p => p.Content.ToLower().Contains(query.ToLower()) || p.Title.ToLower().Contains(query.ToLower()));
+                ViewData["Query"] = query;
+            }
+
+            int allPostCount = posts.Count();
+            posts = posts.Skip(page * 4).Take(4);
+
+            PostIndexVM model = new PostIndexVM(await posts.ToListAsync(), allPostCount, page, 4);
+
+            return View(model);
+        }
+        
+        
+        //public async Task<IActionResult> Index(int? id, string query)
+        //{
+        //    var blogs = await _context.Blog.Where(p => p.Posts.Count() > 0).ToListAsync();
+        //    if (id != null)
+        //    {
+        //        var blog = await _context.Blog.FindAsync(id);
+        //        if (blog != null)
+        //        {
+        //            var postsFiltered = await _context.Post.Where(p => p.BlogId == id && p.IsPublished).OrderByDescending(p => p.Created).ToListAsync();
+        //            var viewModelFiltered = new PostBlogVM(postsFiltered, blogs);
+        //            ViewData["BlogId"] = id;
+        //            return View(viewModelFiltered);
+        //        }
+        //    }
+
+        //    if (query != null)
+        //    {
+        //        var postsSearchFiltered = await _context.Post.Where(p => p.Content.Contains(query) && p.IsPublished).OrderByDescending(p => p.Created).ToListAsync();
+        //        var viewModelSearchFiltered = new PostBlogVM(postsSearchFiltered, blogs);
+        //        ViewData["Query"] = query;
+        //        return View(viewModelSearchFiltered);
+        //    }
+
+        //    var posts = await _context.Post.Where(p => p.IsPublished).OrderByDescending(p => p.Created).ToListAsync();
+        //    var viewModel = new PostBlogVM(posts, blogs);
+
+        //    return View(viewModel);
+        //}
 
         //public async Task<IActionResult> BlogPosts(int? id)
         //{

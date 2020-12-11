@@ -1,0 +1,120 @@
+﻿@using CodingBlog.Services
+@using CodingBlog.Helpers
+@inject ISidebarService sidebarService
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required Meta Tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <title> Bulkit :: Blog</title>
+    <link rel="icon" type="image/png" href="~/blog-html/dist/assets/img/favicon.png" />
+
+    <!--Core CSS -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/blog-html/dist/assets/css/bulma.css">
+    <link rel="stylesheet" href="~/blog-html/dist/assets/css/app.css">
+    <link id="theme-sheet" rel="stylesheet" href="~/blog-html/dist/assets/css/core.css">
+
+</head>
+
+<body class="is-theme-core">
+
+    <!-- Hero (Parallax) and nav -->
+    <div class="hero is-app-grey is-relative is-fullheight">
+
+        <nav class="navbar navbar-wrapper is-cloned">
+            <div class="container">
+                <!-- Brand -->
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <img src="~/Line42logo.svg" alt="" class="switcher-logo" />
+                        @*<img class="switcher-logo" src="~/blog-html/dist/assets/img/logos/logo/bulkit-core.svg" alt="">*@
+                    </a>
+
+
+
+                    <!-- Responsive toggle -->
+                    <div class="custom-burger" data-target="is-cloned">
+                        <a class="responsive-btn" href="javascript:void(0);">
+                            <span class="menu-toggle">
+                                <span class="icon-box-toggle">
+                                    <span class="rotate">
+                                        <i class="icon-line-top"></i>
+                                        <i class="icon-line-center"></i>
+                                        <i class="icon-line-bottom"></i>
+                                    </span>
+                                </span>
+                            </span>
+                        </a>
+                    </div>
+                    <!-- /Responsive toggle -->
+                </div>
+
+                <!-- Navbar menu -->
+                <div id="is-cloned" class="navbar-menu">
+                    <!-- Navbar end -->
+                    <div class="navbar-end">
+                        <partial name="_LoginPartial" />
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <nav class="navbar navbar-wrapper is-transparent is-static">
+            <div class="container">
+                <!-- Brand -->
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <img src="~/Line42logo.svg" alt="" class="switcher-logo" />
+                    </a>
+
+                    <!-- Responsive toggle -->
+                    <div class="custom-burger" data-target="is-static">
+                        <a class="responsive-btn" href="javascript:void(0);">
+                            <span class="menu-toggle">
+                                <span class="icon-box-toggle">
+                                    <span class="rotate">
+                                        <i class="icon-line-top"></i>
+                                        <i class="icon-line-center"></i>
+                                        <i class="icon-line-bottom"></i>
+                                    </span>
+                                </span>
+                            </span>
+                        </a>
+                    </div>
+                    <!-- /Responsive toggle -->
+                </div>
+
+                <!-- Navbar menu -->
+                <div id="is-static" class="navbar-menu">
+
+                    <!-- Navbar end -->
+                    <div class="navbar-end">
+                        <partial name="_LoginPartial" />
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <div id="main-hero" class="hero-body">
+            @RenderBody()
+        </div>
+    </div>
+
+    <!-- Blog post list section -->
+    <!-- Concatenated jQuery and plugins -->
+    <script src="~/blog-html/dist/assets/js/app.js"></script>
+
+    <!-- Bulkit js -->
+    <script src="~/blog-html/dist/assets/js/functions.js"></script>
+    <script src="~/blog-html/dist/assets/js/auth.js"></script>
+    <script src="~/blog-html/dist/assets/js/contact.js"></script>
+    <script src="~/blog-html/dist/assets/js/main.js"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+
+</html>

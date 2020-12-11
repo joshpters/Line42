@@ -4,25 +4,37 @@
 @inject SignInManager<BlogUser> SignInManager
 @inject UserManager<BlogUser> UserManager
 
-<ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))
 {
-    <li class="nav-item">
-        <a  class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity.Name!</a>
-    </li>
-    <li class="nav-item">
-        <form  class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-            <button  type="submit" class="nav-link btn btn-link">Logout</button>
-        </form>
-    </li>
+    <a class="navbar-item is-slide is-centered-tablet" href="javascript: void(0)" title="Manage">Hello @User.Identity.Name!</a>
+    <a class="navbar-item is-slide is-centered-tablet" href="javascript: document.getElementById('logout-form').submit()" title="Manage">Sign Out</a>
+    <form id="logout-form" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })"></form>
+
 }
 else
 {
-    <li class="nav-item">
-        <a class="nav-link" asp-area="Identity" asp-page="/Account/Register">Register</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" asp-area="Identity" asp-page="/Account/Login">Login</a>
-    </li>
+
+    <a class="navbar-item is-slide is-centered-tablet" asp-area="Identity" asp-page="/Account/Login" target="_blank">
+        Sign In
+    </a>
+    <div class="navbar-item is-button is-centered-tablet">
+        <a id="#signup-btn"
+           asp-area="Identity" asp-page="/Account/Register"
+           class="button button-cta is-bold btn-align primary-btn raised is-rounded">
+            Sign Up
+        </a>
+    </div>
 }
-</ul>
+
+
+<!--<a class="navbar-item is-slide is-centered-tablet" href="https://cssninja.io" target="_blank">
+    Sign In
+</a>-->
+<!-- Signup button -->
+<!--<div class="navbar-item is-button is-centered-tablet">
+    <a id="#signup-btn"
+       href="https://1.envato.market/c/1288816/275988/4415?subId1=button&subId2=banner&subId3=https%3A%2F%2Fthemeforest.net%2Fitem%2Fbulkit-agency-startup-and-saas-template%2F21278677&u=https%3A%2F%2Fthemeforest.net%2Fitem%2Fbulkit-agency-startup-and-saas-template%2F21278677"
+       class="button button-cta is-bold btn-align primary-btn raised is-rounded">
+        Sign Up
+    </a>
+</div>-->

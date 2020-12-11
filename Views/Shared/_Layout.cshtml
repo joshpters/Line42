@@ -1,59 +1,318 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - CodingBlog</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" />
-    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <!-- Required Meta Tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <title> Bulkit :: Blog</title>
+    <link rel="icon" type="image/png" href="~/blog-html/dist/assets/img/favicon.png" />
+    
+    <!--Core CSS -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/blog-html/dist/assets/css/bulma.css">
+    <link rel="stylesheet" href="~/blog-html/dist/assets/css/app.css">
+    <link id="theme-sheet" rel="stylesheet" href="~/blog-html/dist/assets/css/core.css">
+
 </head>
-<body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+
+<body class="is-theme-core">
+
+    <!-- Hero (Parallax) and nav -->
+    <div class="hero is-app-grey">
+
+        <nav class="navbar navbar-wrapper is-cloned">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">CodingBlog</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <partial name="_LoginPartial" />
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Blogs" asp-action="Index">All Blogs</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Posts" asp-action="Index">All Posts</a>
-                        </li>
-                    </ul>
+                <!-- Brand -->
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <img class="switcher-logo" src="~/blog-html/dist/assets/img/logos/logo/bulkit-core.svg" alt="">
+                    </a>
+
+
+
+                    <!-- Responsive toggle -->
+                    <div class="custom-burger" data-target="is-cloned">
+                        <a class="responsive-btn" href="javascript:void(0);">
+                            <span class="menu-toggle">
+                                <span class="icon-box-toggle">
+                                    <span class="rotate">
+                                        <i class="icon-line-top"></i>
+                                        <i class="icon-line-center"></i>
+                                        <i class="icon-line-bottom"></i>
+                                    </span>
+                                </span>
+                            </span>
+                        </a>
+                    </div>
+                    <!-- /Responsive toggle -->
+                </div>
+
+                <!-- Navbar menu -->
+                <div id="is-cloned" class="navbar-menu">
+                    <!-- Navbar end -->
+                    <div class="navbar-end">
+
+                        <!-- Navbar item -->
+                        <a class="navbar-item is-slide is-centered-tablet" href="https://cssninja.io" target="_blank">
+                            Sign In
+                        </a>
+
+                        <!-- Signup button -->
+                        <div class="navbar-item is-button is-centered-tablet">
+                            <a id="#signup-btn"
+                               href="https://1.envato.market/c/1288816/275988/4415?subId1=button&subId2=banner&subId3=https%3A%2F%2Fthemeforest.net%2Fitem%2Fbulkit-agency-startup-and-saas-template%2F21278677&u=https%3A%2F%2Fthemeforest.net%2Fitem%2Fbulkit-agency-startup-and-saas-template%2F21278677"
+                               class="button button-cta is-bold btn-align primary-btn raised is-rounded">
+                                Sign Up
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+
+        <nav class="navbar navbar-wrapper is-transparent is-static">
+            <div class="container">
+                <!-- Brand -->
+                <div class="navbar-brand">
+                    <a class="navbar-item" href="/">
+                        <img class="switcher-logo" src="~/blog-html/dist/assets/img/logos/logo/bulkit-core.svg" alt="">
+                    </a>
+
+                    <!-- Responsive toggle -->
+                    <div class="custom-burger" data-target="is-static">
+                        <a class="responsive-btn" href="javascript:void(0);">
+                            <span class="menu-toggle">
+                                <span class="icon-box-toggle">
+                                    <span class="rotate">
+                                        <i class="icon-line-top"></i>
+                                        <i class="icon-line-center"></i>
+                                        <i class="icon-line-bottom"></i>
+                                    </span>
+                                </span>
+                            </span>
+                        </a>
+                    </div>
+                    <!-- /Responsive toggle -->
+                </div>
+
+                <!-- Navbar menu -->
+                <div id="is-static" class="navbar-menu">
+
+                    <!-- Navbar end -->
+                    <div class="navbar-end">
+
+                        <!-- Navbar item -->
+                        <a class="navbar-item is-slide is-centered-tablet" href="https://cssninja.io" target="_blank">
+                            Sign In
+                        </a>
+                        <!-- Signup button -->
+                        <div class="navbar-item is-button is-centered-tablet">
+                            <a id="#signup-btn-double"
+                               href="https://1.envato.market/c/1288816/275988/4415?subId1=button&subId2=banner&subId3=https%3A%2F%2Fthemeforest.net%2Fitem%2Fbulkit-agency-startup-and-saas-template%2F21278677&u=https%3A%2F%2Fthemeforest.net%2Fitem%2Fbulkit-agency-startup-and-saas-template%2F21278677"
+                               class="button button-cta is-bold btn-align primary-btn raised is-rounded">
+                                Sign Up
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <!-- Hero image -->
+        <div id="main-hero" class="hero-body">
+            <div class="container has-text-centered">
+                <div class="columns is-vcentered">
+                    <div class="column is-6 is-offset-3 has-text-centered is-subheader-caption has-search">
+                        <h1 class="title is-2">
+                            BLOG
+                        </h1>
+                        <h2 class="subtitle">Lorem ipsum dolor sit amet consectetur elit.</h2>
+                        <div class="search-area is-rounded">
+                            <div class="control has-icons-left">
+                                <input class="input is-large" type="text" placeholder="Search...">
+                                <span class="icon is-small is-left">
+                                    <i class="sl sl-icon-magnifier"></i>
+                                </span>
+                                <div class="search-button">
+                                    <button class="button primary-btn is-bold">Search</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <!-- Blog post list section -->
+    <div class="section blog-section">
         <div class="container">
-            &copy; 2020 - CodingBlog - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            <div class="columns">
+
+                @RenderBody()
+                
+            </div>
+
+
+
         </div>
-    </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    <script>
-        tinymce.init({
-            selector: '#content'
-        });
-    </script>
+    </div>
+
+    <footer class="footer-light-medium">
+        <div class="container">
+            <div class="footer-head">
+                <div class="head-text">
+                    <h3>Have thoughts on tech?</h3>
+                    <p>Create your free account now to share your thoughts in the comments</p>
+                </div>
+                <div class="head-action">
+                    <div class="buttons">
+                        <a class="button primary-btn raised action-button is-bold">Sign Up</a>
+                        <a class="button chat-button">Sign In</a>
+                    </div>
+                </div>
+            </div>
+            <div class="columns footer-body">
+                <!-- Column -->
+                <div class="column is-centered">
+                    <div class="pt-10 pb-10">
+                        <img class="small-footer-logo" src="~/blog-html/dist/assets/img/logos/bulkit-logo-g.png" alt="">
+                        <div class="footer-description">
+                            Coding Blog is written for developers. Here I focus on popular tech and
+                            my future predictions for technology.
+                        </div>
+                    </div>
+                    <div>
+                        <span class="moto">Website coded by Joshua Peters</span>
+                        <div class="social-links">
+                            <a href="#">
+                                <span class="icon"><i class="fa fa-facebook"></i></span>
+                            </a>
+                            <a href="#">
+                                <span class="icon"><i class="fa fa-twitter"></i></span>
+                            </a>
+                            <a href="#">
+                                <span class="icon"><i class="fa fa-linkedin"></i></span>
+                            </a>
+                            <a href="#">
+                                <span class="icon"><i class="fa fa-dribbble"></i></span>
+                            </a>
+                            <a href="#">
+                                <span class="icon"><i class="fa fa-github"></i></span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="footer-copyright has-text-centered">
+                <p>&copy; 2020 | <a href="https://cssninja.io">Joshua Peters</a> | All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>    <!-- Back To Top Button -->
+    <div id="backtotop"><a href="#"></a></div>
+    <!-- Concatenated jQuery and plugins -->
+    <script src="~/blog-html/dist/assets/js/app.js"></script>
+
+    <!-- Bulkit js -->
+    <script src="~/blog-html/dist/assets/js/functions.js"></script>
+    <script src="~/blog-html/dist/assets/js/auth.js"></script>
+    <script src="~/blog-html/dist/assets/js/contact.js"></script>
+    <script src="~/blog-html/dist/assets/js/main.js"></script>
     @RenderSection("Scripts", required: false)
+    <!-- Landing page js -->
 </body>
+
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@*<!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>@ViewData["Title"] - CodingBlog</title>
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="~/css/site.css" />
+        <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    </head>
+    <body>
+        <header>
+            <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+                <div class="container">
+                    <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">CodingBlog</a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                        <partial name="_LoginPartial" />
+                        <ul class="navbar-nav flex-grow-1">
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Blogs" asp-action="Index">All Blogs</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Posts" asp-action="Index">All Posts</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </header>
+        <div class="container">
+            <main role="main" class="pb-3">
+                @RenderBody()
+            </main>
+        </div>
+
+        <footer class="border-top footer text-muted">
+            <div class="container">
+                &copy; 2020 - CodingBlog - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            </div>
+        </footer>
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+        <script>
+            tinymce.init({
+                selector: '#content'
+            });
+        </script>
+        @RenderSection("Scripts", required: false)
+
+    </body>
+    </html>*@

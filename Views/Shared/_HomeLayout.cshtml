@@ -11,7 +11,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
 
-    <title> Bulkit :: Blog</title>
+    <title>Line42 - @ViewData["title"]</title>
     <link rel="icon" type="image/png" href="~/blog-html/dist/assets/img/favicon.png" />
 
     <!--Core CSS -->
@@ -36,10 +36,7 @@
                 <div class="navbar-brand">
                     <a class="navbar-item" href="/">
                         <img src="~/Line42logo.svg" alt="" class="switcher-logo" />
-                        @*<img class="switcher-logo" src="~/blog-html/dist/assets/img/logos/logo/bulkit-core.svg" alt="">*@
                     </a>
-
-
 
                     <!-- Responsive toggle -->
                     <div class="custom-burger" data-target="is-cloned">
@@ -123,24 +120,13 @@
         <div id="main-hero" class="hero-body">
             <div class="container has-text-centered">
                 <div class="columns is-vcentered">
-                    <div class="column is-6 is-offset-3 has-text-centered is-subheader-caption has-search">
+                    <div class="column is-6 is-offset-3 has-text-centered is-subheader-caption">
                         <h1 class="title is-2">
-                            BLOG
+                            A Tech Blog
                         </h1>
-                        <h2 class="subtitle">Lorem ipsum dolor sit amet consectetur elit.</h2>
-                        <div class="search-area is-rounded">
-                            <div class="control has-icons-left">
-                                <form asp-action="Index" asp-controller="Home" method="get">
-                                    <input class="input is-large" name="query" type="text" placeholder="Search...">
-                                    <span class="icon is-small is-left">
-                                        <i class="sl sl-icon-magnifier"></i>
-                                    </span>
-                                    <div class="search-button">
-                                        <button type="submit" class="button primary-btn is-bold">Search</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
+                        <h2 class="subtitle">
+                            My thoughts on the newest technologies in the web development sphere.
+                        </h2>
                     </div>
                 </div>
             </div>
@@ -174,6 +160,12 @@
 
                             <div class="blog-sidebar-categories-inner">
                                 <!--Category-->
+                                <a asp-controller="Home" asp-action="Index" class="blog-sidebar-category">
+                                    <span>All</span>
+                                    <div class="post-count">
+                                        <span>10</span>
+                                    </div>
+                                </a>
                                 @foreach (var blog in (await sidebarService.GetBlogs()))
                                 {
                                     <a asp-controller="Home" asp-action="Category" asp-route-id="@blog.Id" class="blog-sidebar-category">
@@ -246,26 +238,17 @@
                     <div class="pt-10 pb-10">
                         <img class="small-footer-logo" src="~/blog-html/dist/assets/img/logos/bulkit-logo-g.png" alt="">
                         <div class="footer-description">
-                            Coding Blog is written for developers. Here I focus on popular tech and
+                            Line42 is written for developers. Here I focus on popular tech and
                             my future predictions for technology.
                         </div>
                     </div>
                     <div>
                         <span class="moto">Website coded by Joshua Peters</span>
                         <div class="social-links">
-                            <a href="#">
-                                <span class="icon"><i class="fa fa-facebook"></i></span>
-                            </a>
-                            <a href="#">
-                                <span class="icon"><i class="fa fa-twitter"></i></span>
-                            </a>
-                            <a href="#">
+                            <a href="https://www.linkedin.com/in/joshpters/">
                                 <span class="icon"><i class="fa fa-linkedin"></i></span>
                             </a>
-                            <a href="#">
-                                <span class="icon"><i class="fa fa-dribbble"></i></span>
-                            </a>
-                            <a href="#">
+                            <a href="https://github.com/joshpters">
                                 <span class="icon"><i class="fa fa-github"></i></span>
                             </a>
                         </div>

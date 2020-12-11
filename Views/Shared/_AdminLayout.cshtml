@@ -14,7 +14,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Coding Blog - Admin</title>
+    <title>Line42 - @ViewData["title"]</title>
 
     <!-- Custom fonts for this template-->
     <link href="~/admin-html/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -34,56 +34,68 @@
         <!-- Sidebar -->
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" asp-controller="Blogs" asp-action="Index">
-                <div class="sidebar-brand-text">Admin</div>
-            </a>
+            @if (User.IsInRole("Admin"))
+            {
+                <a class="sidebar-brand d-flex align-items-center justify-content-center" asp-controller="Blogs" asp-action="Index">
+                    <div class="sidebar-brand-text">Admin</div>
+                </a>
+            }
+            else if (User.IsInRole("Moderator"))
+            {
+                <a class="sidebar-brand d-flex align-items-center justify-content-center" asp-controller="Comments" asp-action="Index">
+                    <div class="sidebar-brand-text">Moderator</div>
+                </a>
+            }
 
             <!-- Divider -->
-            <hr class="sidebar-divider">
+            @if (User.IsInRole("Admin"))
+            {
+                <hr class="sidebar-divider">
 
-            <div class="sidebar-heading">
-                Blogs
-            </div>
+                <div class="sidebar-heading">
+                    Blogs
+                </div>
 
-            <!-- Nav Item - Dashboard -->
-            <li class="nav-item">
-                <a class="nav-link" asp-controller="Blogs" asp-action="Index">
-                    <i class="fas fa-fw fa-list-ul"></i>
-                    <span>All Blogs</span>
-                </a>
-            </li>
+                <!-- Nav Item - Dashboard -->
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="Blogs" asp-action="Index">
+                        <i class="fas fa-fw fa-list-ul"></i>
+                        <span>All Blogs</span>
+                    </a>
+                </li>
 
-            <!-- Nav Item - Dashboard -->
-            <li class="nav-item">
-                <a class="nav-link" asp-controller="Blogs" asp-action="Create">
-                    <i class="fas fa-fw fa-plus-square"></i>
-                    <span>New Blog</span>
-                </a>
-            </li>
+                <!-- Nav Item - Dashboard -->
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="Blogs" asp-action="Create">
+                        <i class="fas fa-fw fa-plus-square"></i>
+                        <span>New Blog</span>
+                    </a>
+                </li>
 
-            <!-- Divider -->
-            <hr class="sidebar-divider">
+                <!-- Divider -->
+                <hr class="sidebar-divider">
 
-            <!-- Heading -->
-            <div class="sidebar-heading">
-                Posts
-            </div>
+                <!-- Heading -->
+                <div class="sidebar-heading">
+                    Posts
+                </div>
 
-            <!-- Nav Item - Charts -->
-            <li class="nav-item">
-                <a class="nav-link" asp-controller="Posts" asp-action="Index">
-                    <i class="fas fa-fw fa-file-alt"></i>
-                    <span>All Posts</span>
-                </a>
-            </li>
+                <!-- Nav Item - Charts -->
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="Posts" asp-action="Index">
+                        <i class="fas fa-fw fa-file-alt"></i>
+                        <span>All Posts</span>
+                    </a>
+                </li>
 
-            <!-- Nav Item - Tables -->
-            <li class="nav-item">
-                <a class="nav-link" asp-controller="Posts" asp-action="Create">
-                    <i class="fas fa-fw fa-plus-square"></i>
-                    <span>Create Post</span>
-                </a>
-            </li>
+                <!-- Nav Item - Tables -->
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="Posts" asp-action="Create">
+                        <i class="fas fa-fw fa-plus-square"></i>
+                        <span>Create Post</span>
+                    </a>
+                </li>
+            }
 
             <!-- Divider -->
             <hr class="sidebar-divider">

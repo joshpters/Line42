@@ -6,24 +6,22 @@
 @{
     ViewData["Title"] = Model.Title;
     Layout = "_PostLayout";
-    if (Model.Image != null)
-    {
-        ViewData["HeaderImage"] = @ImageHelper.GetImage(Model);
-    }
-    ViewData["IncludeHeader"] = "true";
+    //if (Model.Image != null)
+    //{
+    //    ViewData["HeaderImage"] = @ImageHelper.GetImage(Model);
+    //}
+    //ViewData["IncludeHeader"] = "true";
 }
-
-
-
-
 
 <div class="column is-8 is-offset-2">
 
     <!-- Single Post -->
     <div class="is-single-post">
         <div class="featured-post-image">
-            <img src="https://via.placeholder.com/1200x300" data-demo-src="assets/img/demo/posts/post-1.jpg"
-                 alt="">
+            @if(Model.Image != null)
+            {
+                <img src="@ImageHelper.GetImage(Model)" alt="">
+            }
             <div class="post-date">
                 <div class="post-date-inner">
                     <span>@Model.Created.ToString("MMM")</span>

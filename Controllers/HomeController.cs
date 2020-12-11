@@ -34,6 +34,7 @@ namespace CodingBlog.Controllers
             var posts = await _context.Post
                 .Include(p => p.Blog)
                 .Where(p => p.IsPublished == true && p.BlogId == id)
+                .OrderByDescending(p => p.Created)
                 .ToListAsync();
 
             ViewData["BlogId"] = id;
@@ -43,7 +44,11 @@ namespace CodingBlog.Controllers
 
         public async Task<IActionResult> Index(string query, int page = 0)
         {
-            var posts = _context.Post.Include(p => p.Blog).Where(p => p.IsPublished == true);
+            var posts = _context.Post
+                .Include(p => p.Blog)
+                .OrderByDescending(p => p.Created)
+                .Where(p => p.IsPublished == true);
+                
 
             if(query != null)
             {

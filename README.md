@@ -10,7 +10,7 @@ This project was created using .NET Core MVC, C#, Bootstrap, HTML5, CSS3, and Ja
 
 The goal of this project was to exercise my ASP.NET Core skills in coding a project from start to finish in a short amount of time.
 
-When creating this project I am working on improving my workflow in the start of a new project.
+When creating this project I worked on improving my workflow in the early stages of a new project.
 
 ## Built With
 

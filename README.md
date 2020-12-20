@@ -2,7 +2,7 @@
 
 A blog, not built with WordPress.
 
-![Screenshot](/screenshot.jpg)
+![Screenshot](screenshot.JPG)
 
 This project was created using .NET Core MVC, C#, Bootstrap, HTML5, CSS3, and JavaScript.
 
@@ -34,7 +34,7 @@ To view this site live, [click here](http://mvc-coding-blog.herokuapp.com).
 However, to download and run locally, clone this repository and open in Visual Studio 2019. You will also need PostgreSQL 13+ installed on your PC.
 
 ``` sourceCode
-git clone https://github.com/joshpters/CodingBlog
+git clone https://github.com/joshpters/Line42
 ```
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
